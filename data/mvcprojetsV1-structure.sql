@@ -28,8 +28,8 @@ CREATE TABLE IF NOT EXISTS `mvcprojets`.`user` (
   `useruniqid` VARCHAR(120) NULL COMMENT 'idententifiant unique',
   `actif` TINYINT UNSIGNED NULL DEFAULT 0 COMMENT '0 => inactif\n1  => actif\n2 => banni',
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE,
-  UNIQUE INDEX `usermail_UNIQUE` (`usermail` ASC) VISIBLE)
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) ,
+  UNIQUE INDEX `usermail_UNIQUE` (`usermail` ASC) )
 ENGINE = InnoDB;
 
 
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `mvcprojets`.`post` (
   `visible` TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '0 => not visible\n1 => visible',
   `user_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_post_user_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_post_user_idx` (`user_id` ASC) ,
   CONSTRAINT `fk_post_user`
     FOREIGN KEY (`user_id`)
     REFERENCES `mvcprojets`.`user` (`id`)
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `mvcprojets`.`category` (
   `title` VARCHAR(100) NOT NULL,
   `content` VARCHAR(800) NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `title_UNIQUE` (`title` ASC) VISIBLE)
+  UNIQUE INDEX `title_UNIQUE` (`title` ASC) )
 ENGINE = InnoDB;
 
 
@@ -77,8 +77,8 @@ DROP TABLE IF EXISTS `mvcprojets`.`category_has_post` ;
 CREATE TABLE IF NOT EXISTS `mvcprojets`.`category_has_post` (
   `category_id` INT UNSIGNED NOT NULL,
   `post_id` INT UNSIGNED NOT NULL,
-  INDEX `fk_category_has_post_post1_idx` (`post_id` ASC) VISIBLE,
-  INDEX `fk_category_has_post_category1_idx` (`category_id` ASC) VISIBLE,
+  INDEX `fk_category_has_post_post1_idx` (`post_id` ASC) ,
+  INDEX `fk_category_has_post_category1_idx` (`category_id` ASC) ,
   PRIMARY KEY (`category_id`, `post_id`),
   CONSTRAINT `fk_category_has_post_category1`
     FOREIGN KEY (`category_id`)
