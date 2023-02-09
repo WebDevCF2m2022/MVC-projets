@@ -1,2 +1,4 @@
 # protection de la configuration
 config.php
+# PHPStorm
+.idea/
