@@ -10,7 +10,7 @@ Il servira de base pour les travaux de groupe des stagiaires du CF2m. Il ne s'ag
 
 Des relations `many to many` et `many to one` seront demandées en SQL, pour permettre d'afficher des articles avec leurs rubriques et leurs auteurs.
 
-Une administration sera présente, elle permettra de faire le `CRUD` (Create, Read, Update, Delete) des articles. Chaque stagiaire devra y avoir un accès.
+Une administration sera présente, elle permettra de faire le `CRUD` (Create, Read, Update, Delete) des articles. Chaque stagiaire devra y avoir un accès personnel.
 
 Le design sera libre mais devra être responsive.
 
