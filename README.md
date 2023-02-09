@@ -9,6 +9,10 @@ Pour Model View Controller
     /view/
     /controller/
 
+Principe de fonctionnement du MVC en une image :
+
+![Modèle MVC PHP](https://github.com/WebDevCF2m2022/MVC-projets/raw/main/data/MVC.png)
+
 ## Dossier public
 
 Seul dossier accessible à l'utilisateur final
