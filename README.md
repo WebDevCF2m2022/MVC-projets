@@ -2,6 +2,8 @@
 Préparation aux projets des groupes web
 
 ## Principes
+
+### V1
 Nous souhaitons obtenir un site de news (le sujet des articles est de moindre importance) en couplant PHP 8 et MariaDB.
 
 Le site doit être en MVC procédural au départ, puis sera converti en OO (orienté objet) plus tard.
@@ -49,3 +51,8 @@ C'est ici que se trouveront nos fichiers préparatoires et nos DB exportables
 C'est le fichier index.php se trouvant dans le dossier public
 
     public/index.php
+
+## Première partie
+
+### Création de la DB
+Elle sera créée dans le dossier `data` avec Workbench
