@@ -4,4 +4,6 @@ config.php
 .idea/
 # Workbench
 data/mvcprojetsV1.mwb.bak
+# DB request
+data/request.sql
 
