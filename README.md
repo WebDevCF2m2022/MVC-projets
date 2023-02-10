@@ -56,3 +56,5 @@ C'est le fichier index.php se trouvant dans le dossier public
 
 ### Création de la DB
 Elle sera créée dans le dossier `data` avec Workbench
+
+![mvcprojets DB](https://github.com/WebDevCF2m2022/MVC-projets/raw/main/data/mvcprojetsV1.png)
