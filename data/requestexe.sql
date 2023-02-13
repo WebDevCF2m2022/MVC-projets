@@ -104,13 +104,33 @@ ORDER BY p.datecreate ASC;
 #
 
 # Séléction des champs id, title et datecreate de la table post, AVEC l'id (renommé en idcategory) et title (renommé en titlecategory) de la table category SEULEMENT si le lien existe (que les données en INNER), ordonnés par datecreate ascendante
-
+SELECT p.id, p.title, p.datecreate, c.id AS idcategory, c.title AS titlecategory
+FROM post p
+	INNER JOIN category_has_post h 
+    ON p.id = h.post_id
+    INNER JOIN category c 
+    ON c.id = h.category_id
+ORDER BY p.datecreate ASC;
 
 # Séléction des champs id, title et datecreate de la table post, AVEC l'id (renommé en idcategory) et title (renommé en titlecategory) de la table category MEME si le lien N'EXISTE PAS (tous les post), ordonnés par datecreate ascendante
-
+SELECT p.id, p.title, p.datecreate, c.id AS idcategory, c.title AS titlecategory
+FROM post p
+	LEFT JOIN category_has_post h 
+    ON p.id = h.post_id
+    LEFT JOIN category c 
+    ON c.id = h.category_id
+    
+ORDER BY p.datecreate ASC;
 
 # idem que le précédent pour trouver QUE les post qui n'ont PAS de category (sans les champs de category à l'affichage, voir isnull()), en partant de FROM post !
-
+SELECT p.id, p.title, p.datecreate, c.id AS idcategory, c.title AS titlecategory
+FROM post p
+	LEFT JOIN category_has_post h 
+    ON p.id = h.post_id
+    LEFT JOIN category c 
+    ON c.id = h.category_id
+    WHERE c.id IS NULL
+ORDER BY p.datecreate ASC;
 
 # Séléction des champs id, title et datecreate de la table post, AVEC l'id (renommé en idcategory) et title (renommé en titlecategory) de la table category DANS TOUS LES CAS même si le lien N'EXISTE PAS (toutes les category) ordonnés par datecreate ascendante
 
