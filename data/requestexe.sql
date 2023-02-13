@@ -133,9 +133,24 @@ FROM post p
 ORDER BY p.datecreate ASC;
 
 # Séléction des champs id, title et datecreate de la table post, AVEC l'id (renommé en idcategory) et title (renommé en titlecategory) de la table category DANS TOUS LES CAS même si le lien N'EXISTE PAS (toutes les category) ordonnés par datecreate ascendante
+SELECT p.id, p.title, p.datecreate, c.id AS idcategory, c.title AS titlecategory
+FROM post p
+	RIGHT JOIN category_has_post h 
+    ON p.id = h.post_id
+    RIGHT JOIN category c 
+    ON c.id = h.category_id
+ORDER BY p.datecreate ASC;
 
 
-# idem que le précédent pour trouver QUE les category qui n'ont PAS de post (sans les champs de category à l'affichage, voir isnull()), en partant de FROM post !
+# idem que le précédent pour trouver QUE les category qui n'ont PAS de post (sans les champs de post à l'affichage, voir isnull()), en partant de FROM post !
+SELECT c.id AS idcategory, c.title AS titlecategory
+FROM post p
+	RIGHT JOIN category_has_post h 
+    ON p.id = h.post_id
+    RIGHT JOIN category c
+    ON c.id = h.category_id
+    WHERE p.id IS NULL
+ORDER BY p.datecreate ASC;
 
 
 #
@@ -144,10 +159,43 @@ ORDER BY p.datecreate ASC;
 #
 
 # Séléction des champs id, title et datecreate de la table post, AVEC l'id (renommé en iduser) et userscreen de la table user SEULEMENT si le lien existe (que les données en INNER), AVEC l'id (renommé en idcategory) et title (renommé en titlecategory) de la table category SEULEMENT si le lien existe (que les données en INNER), ordonnés par datecreate ascendante
+SELECT p.id, p.title, p.datecreate, u.id AS iduser, u.userscreen, c.id AS idcategory, c.title AS titlecategory
+FROM post p
+	INNER JOIN user u
+		ON p.user_id = u.id
+	INNER JOIN category_has_post h 
+		ON p.id = h.post_id
+    INNER JOIN category c 
+		ON c.id = h.category_id
+ORDER BY p.datecreate ASC;
 
 
 # Le many to many permet d'avoir des doublons, pour éviter cela, on peut utiliser GROUP BY (sur post) et GROUP_CONCAT (sur les champs de category) (en mysql er mariadb)
 # Séléction des champs id, title et datecreate de la table post, AVEC l'id (renommé en iduser) et userscreen de la table user SEULEMENT si le lien existe (que les données en INNER), AVEC l'id concaténé avec la , (renommé en idcategory) et title concaténé avec '||0||' (renommé en titlecategory) de la table category SEULEMENT si le lien existe (que les données en INNER), ordonnés par datecreate ascendante groupé par la clef primaire de post
+SELECT p.id, p.title, p.datecreate, u.id AS iduser, u.userscreen, 
+GROUP_CONCAT(c.id) AS idcategory, 
+GROUP_CONCAT(c.title SEPARATOR '||0||') AS titlecategory
+FROM post p
+	INNER JOIN user u
+		ON p.user_id = u.id
+	INNER JOIN category_has_post h 
+		ON p.id = h.post_id
+    INNER JOIN category c 
+		ON c.id = h.category_id
+        GROUP BY p.id
+ORDER BY p.datecreate ASC;
 
 
 # Séléction des champs id, title et datecreate de la table post, AVEC l'id (renommé en iduser) et userscreen de la table user AUSSI si le lien existe (que les données en LEFT, tous les articles), AVEC l'id concaténé avec la , (renommé en idcategory) et title concaténé avec '||0||' (renommé en titlecategory) de la table category AUSSI si le lien existe (tous les articles), ordonnés par datecreate ascendante
+SELECT p.id, p.title, p.datecreate, u.id AS iduser, u.userscreen, 
+GROUP_CONCAT(c.id) AS idcategory, 
+GROUP_CONCAT(c.title SEPARATOR '||0||') AS titlecategory
+FROM post p
+	LEFT JOIN user u
+		ON p.user_id = u.id
+	LEFT JOIN category_has_post h 
+		ON p.id = h.post_id
+    LEFT JOIN category c 
+		ON c.id = h.category_id
+        GROUP BY p.id
+ORDER BY p.datecreate ASC;
