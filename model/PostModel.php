@@ -1,5 +1,5 @@
 <?php
 
-function postHomepageAll(mysqli $connect):array|Exception{
-
+function postHomepageAll($db){
+    return "Hello World !";
 }

@@ -199,3 +199,17 @@ FROM post p
 		ON c.id = h.category_id
         GROUP BY p.id
 ORDER BY p.datecreate ASC;
+
+# Séléction des champs id, title, 255 caractères de content (renommé en contentshort) et datecreate de la table post, AVEC l'id (renommé en iduser) et userscreen de la table user SEULEMENT si le lien existe (INNER), AVEC l'id concaténé avec la , (renommé en idcategory) et title concaténé avec '||0||' (renommé en titlecategory) de la table category AUSSI si le lien existe (tous les articles), ordonnés par datecreate ascendante
+SELECT p.id, p.title, LEFT(p.content, 255) AS contentshort, p.datecreate, u.id AS iduser, u.userscreen, 
+GROUP_CONCAT(c.id) AS idcategory, 
+GROUP_CONCAT(c.title SEPARATOR '||0||') AS titlecategory
+FROM post p
+	INNER JOIN user u
+		ON p.user_id = u.id
+	LEFT JOIN category_has_post h 
+		ON p.id = h.post_id
+    LEFT JOIN category c 
+		ON c.id = h.category_id
+        GROUP BY p.id
+ORDER BY p.datecreate ASC;
