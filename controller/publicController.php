@@ -8,12 +8,33 @@
 # récupération du menu
 $recupMenu = getAllCategoryMenu($db);
 
-# homepage's datas from MODEL
-$recupAllPost = postHomepageAll($db);
+// si on est sur la partie "lire la suite" - détail de l'article
+if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
 
-# Post count
-$nbPost = count($recupAllPost);
+    $idpost = (int) $_GET['postId'];
+    # one article by id
+    $recupPost = postOneById($db,$idpost);
+
+    # ICI
+    var_dump($recupPost);
+
+// si on est sur la partie catégorie
+}elseif(isset($_GET['categoryId'])&&ctype_digit($_GET['categoryId'])){    
 
 
-# homepage's view from VIEW
-require "../view/publicView/publicHomepageView.php";
+// si on est sur la partie utilisateur
+}elseif(isset($_GET['userId'])&&ctype_digit($_GET['userId'])){ 
+
+
+// sinon on est sur l'accueil    
+}else{
+    # homepage's datas from MODEL
+    $recupAllPost = postHomepageAll($db);
+
+    # Post count
+    $nbPost = count($recupAllPost);
+
+
+    # homepage's view from VIEW
+    require "../view/publicView/publicHomepageView.php";
+}
