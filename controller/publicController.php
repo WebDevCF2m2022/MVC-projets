@@ -5,7 +5,10 @@
 # debug with file's name
 # echo __FILE__;
 
-# homepage's data from MODEL
+# récupération du menu
+$recupMenu = getAllCategoryMenu($db);
+
+# homepage's datas from MODEL
 $recupAllPost = postHomepageAll($db);
 
 # Post count

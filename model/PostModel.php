@@ -1,5 +1,5 @@
 <?php
-// public homepage function
+// public homepage function All Posts
 function postHomepageAll($db){
     $sql = "SELECT p.id, p.title, LEFT(p.content, 255) AS contentshort, p.datecreate, u.id AS iduser, u.userscreen, 
     GROUP_CONCAT(c.id) AS idcategory, 
@@ -23,3 +23,5 @@ function postHomepageAll($db){
     return mysqli_fetch_all($query,MYSQLI_ASSOC);
 }
 // truncate text
+
+// date fr

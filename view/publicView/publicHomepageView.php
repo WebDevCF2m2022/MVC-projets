@@ -20,9 +20,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link active" href="./">Accueil</a></li>
-<!--
-Menu ici
--->
+                <?php
+                foreach($recupMenu as $item):
+                ?>
+<li class="nav-item"><a class="nav-link" href="?categoryId=<?=$item['id']?>"><?=$item['title']?></a></li>
+                <?php
+                endforeach;
+                ?>
             </ul>
         </div>
     </div>
@@ -37,8 +41,9 @@ Menu ici
                     <!-- Post title-->
                     <h1 class="fw-bolder mb-1">DB - BDD : Les bases de données</h1>
                     <!-- Post meta content-->
-                    <!--<div class="text-muted fst-italic mb-2">Posted on January 1, 2022 by Start Bootstrap</div>-->
+                    
                     <p class="fs-5 mb-4">Site de préparation du travail de groupe du <a href="https://github.com/WebDevCF2m2022/MVC-projets" target="_blank">CF2m</a> utilisant des morceaux d'articles libres depuis <a href="https://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Accueil_principal" target="_blank">Wikipédia</a>. Les spécifications techniques sont : MVC avec un dossier publique, PHP 8 procédural et MariaDB.</p>
+                    <?php // var_dump($_GET) ?>
                 </header>
                 <!-- Preview image figure-->
                 <!--<figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>-->
@@ -57,11 +62,25 @@ Menu ici
                     <article>
                         <section class="mb-5">
                             <h2 class="fw-bolder mb-4 mt-5"><?=$item['title']?></h2>
+                            <div class="text-muted fst-italic mb-2">Posté le <?=$item['datecreate']?></div>
                             <!-- Post categories-->
-                            <!-- <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-                             <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
-                             -->
-                            <p class="fs-5 mb-4"><?=$item['contentshort']?> ... Lire la suite</p>
+                            <?php
+                        // on a des catégories    
+                        if(!is_null($item['idcategory'])):
+                            $idcategory = explode(',',$item['idcategory']);
+                            $titlecategory = explode('||0||',$item['titlecategory']);
+                            #var_dump($idcategory,$titlecategory);
+                            // tant que l'on a des catégories
+                            foreach($idcategory as $key=>$value):
+                            ?>
+                            
+                            <a class="badge bg-secondary text-decoration-none link-light" href="?categoryId=<?=$value?>"><?=$titlecategory[$key]?></a>
+                             
+                             <?php
+                             endforeach;
+                        endif;
+                             ?>
+                            <p class="fs-5 mb-4"><?=$item['contentshort']?> <a href="?postId=<?=$item['id']?>">... Lire la suite</a></p>
                         </section>
                     </article>
 
