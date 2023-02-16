@@ -15,16 +15,29 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
     # one article by id
     $recupPost = postOneById($db,$idpost);
 
-    # ICI
-    var_dump($recupPost);
+    # if no Post
+    if(is_null($recupPost)){
+        $detailError = "Cet article n'existe plus ! ";
+        require "../view/publicView/public404View.php";
+        exit();
+    }
+
+    # detail's post view from VIEW
+    require "../view/publicView/publicPostDetailView.php";;
 
 // si on est sur la partie catégorie
-}elseif(isset($_GET['categoryId'])&&ctype_digit($_GET['categoryId'])){    
+}elseif(isset($_GET['categoryId'])&&ctype_digit($_GET['categoryId'])){
 
+    $detailError = "La page catégorie n'est pas encore créée ";
+    require "../view/publicView/public404View.php";
+    exit();
 
 // si on est sur la partie utilisateur
-}elseif(isset($_GET['userId'])&&ctype_digit($_GET['userId'])){ 
+}elseif(isset($_GET['userId'])&&ctype_digit($_GET['userId'])){
 
+    $detailError = "La page utilisateur n'est pas encore créée ";
+    require "../view/publicView/public404View.php";
+    exit();
 
 // sinon on est sur l'accueil    
 }else{

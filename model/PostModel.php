@@ -36,7 +36,7 @@ function postHomepageAll(mysqli $db): array|Exception{
  * @param int $id
  * @return array|Exception
  */
-function postOneById(mysqli $db, int $id): array|Exception{
+function postOneById(mysqli $db, int $id): array|Exception|null{
 
     $sql = "SELECT p.id, p.title, p.content, p.datecreate, 
     u.id AS iduser, u.userscreen, 
