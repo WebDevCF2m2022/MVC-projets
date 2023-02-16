@@ -62,7 +62,7 @@
                     <article>
                         <section class="mb-5">
                             <h2 class="fw-bolder mb-4 mt-5"><?=$item['title']?></h2>
-                            <div class="text-muted fst-italic mb-2">Posté par <a href="?userId=<?=$item['iduser']?>"><?=$item['userscreen']?></a> le <?=$item['datecreate']?></div>
+                            <div class="text-muted fst-italic mb-2">Posté par <a href="?userId=<?=$item['iduser']?>"><?=$item['userscreen']?></a> le <?=datetimeToFrench($item['datecreate'])?></div>
                             <!-- Post categories-->
                             <?php
                         // on a des catégories    
@@ -80,7 +80,7 @@
                              endforeach;
                         endif;
                              ?>
-                            <p class="fs-5 mb-4"><?=$item['contentshort']?> <a href="?postId=<?=$item['id']?>">... Lire la suite</a></p>
+                            <p class="fs-5 mb-4"><?=cutTheText($item['contentshort'])?> ... <a href="?postId=<?=$item['id']?>">Lire la suite</a></p>
                         </section>
                     </article>
 
