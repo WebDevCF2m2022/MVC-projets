@@ -91,3 +91,12 @@ function datetimeToFrench(string $date): string {
     // return french date
     return $semaine[date("w",$timestamp)]." ".date("d",$timestamp)." ".$mois[date("n",$timestamp)]." ".date("Y \à H \h i",$timestamp);
 }
+
+/**
+ * create real links on URL
+ * @param string $text
+ * @return string
+ */
+function createURL(string $text): string{
+    return preg_replace("#(^|[\n ])([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*)#is", "\\1<a href=\"\\2\" target=\"_blank\" rel=\"nofollow\">\\2</a>", $text);
+}

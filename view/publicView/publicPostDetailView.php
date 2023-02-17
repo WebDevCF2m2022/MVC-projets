@@ -68,7 +68,7 @@
                              endforeach;
                         endif;
                              ?>
-                            <p class="fs-5 mb-4"><?=nl2br($recupPost['content'])?></p>
+                            <p class="fs-5 mb-4"><?=createURL(nl2br($recupPost['content']))?></p>
                         </section>
                     </article>
 
