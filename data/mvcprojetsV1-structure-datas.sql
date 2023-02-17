@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.3
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1:3307
--- Généré le : lun. 13 fév. 2023 à 12:09
--- Version du serveur : 10.3.35-MariaDB
--- Version de PHP : 8.1.7
+-- Hôte : localhost:3306
+-- Généré le : ven. 17 fév. 2023 à 10:53
+-- Version du serveur : 10.3.36-MariaDB-0+deb10u2
+-- Version de PHP : 8.0.27
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -26,13 +26,11 @@ USE `mvcprojets`;
 --
 
 DROP TABLE IF EXISTS `category`;
-CREATE TABLE IF NOT EXISTS `category` (
-                                          `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                                          `title` varchar(100) NOT NULL,
-                                          `content` varchar(800) DEFAULT NULL,
-                                          PRIMARY KEY (`id`),
-                                          UNIQUE KEY `title_UNIQUE` (`title`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+CREATE TABLE `category` (
+                            `id` int(10) UNSIGNED NOT NULL,
+                            `title` varchar(100) NOT NULL,
+                            `content` varchar(800) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `category`
@@ -52,12 +50,9 @@ INSERT INTO `category` (`id`, `title`, `content`) VALUES
 --
 
 DROP TABLE IF EXISTS `category_has_post`;
-CREATE TABLE IF NOT EXISTS `category_has_post` (
-                                                   `category_id` int(10) UNSIGNED NOT NULL,
-                                                   `post_id` int(10) UNSIGNED NOT NULL,
-                                                   PRIMARY KEY (`category_id`,`post_id`),
-                                                   KEY `fk_category_has_post_post1_idx` (`post_id`),
-                                                   KEY `fk_category_has_post_category1_idx` (`category_id`)
+CREATE TABLE `category_has_post` (
+                                     `category_id` int(10) UNSIGNED NOT NULL,
+                                     `post_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -74,7 +69,8 @@ INSERT INTO `category_has_post` (`category_id`, `post_id`) VALUES
                                                                (2, 8),
                                                                (3, 4),
                                                                (3, 9),
-                                                               (4, 8);
+                                                               (4, 8),
+                                                               (5, 10);
 
 -- --------------------------------------------------------
 
@@ -83,16 +79,14 @@ INSERT INTO `category_has_post` (`category_id`, `post_id`) VALUES
 --
 
 DROP TABLE IF EXISTS `post`;
-CREATE TABLE IF NOT EXISTS `post` (
-                                      `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                                      `title` varchar(200) NOT NULL,
-                                      `content` text NOT NULL,
-                                      `datecreate` datetime DEFAULT current_timestamp(),
-                                      `visible` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '0 => not visible\n1 => visible',
-                                      `user_id` int(10) UNSIGNED DEFAULT NULL,
-                                      PRIMARY KEY (`id`),
-                                      KEY `fk_post_user_idx` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+CREATE TABLE `post` (
+                        `id` int(10) UNSIGNED NOT NULL,
+                        `title` varchar(200) NOT NULL,
+                        `content` text NOT NULL,
+                        `datecreate` datetime DEFAULT current_timestamp(),
+                        `visible` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '0 => not visible\n1 => visible',
+                        `user_id` int(10) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `post`
@@ -107,7 +101,8 @@ INSERT INTO `post` (`id`, `title`, `content`, `datecreate`, `visible`, `user_id`
                                                                                       (6, 'Cassandra', 'Apache Cassandra est un système de gestion de base de données (SGBD) de type NoSQL conçu pour gérer des quantités massives de données sur un grand nombre de serveurs, assurant une haute disponibilité en éliminant les points de défaillance unique. Il permet une répartition robuste sur plusieurs centres de données, avec une réplication asynchrone sans nœud maître et une faible latence pour les opérations de tous les clients.\n\nCassandra met l\'accent sur la performance. En 2012, des chercheurs de l\'université de Toronto étudiant les systèmes NoSQL ont conclu : « en termes d\'adaptabilité, il y a un gagnant indiscutable. Cassandra atteint le plus fort débit sur le maximum de nœuds dans tous les tests » même si « cela se fait au détriment d\'une latence élevée sur les lectures et les écritures ».\n\nLe projet est publié en logiciel libre et porté par la fondation Apache.\n\nWikipédia : https://fr.wikipedia.org/wiki/Cassandra_(base_de_donn%C3%A9es)', '2023-02-10 12:11:12', 0, 4),
                                                                                       (7, 'Propriétés ACID', 'En informatique, les propriétés ACID (atomicité, cohérence, isolation et durabilité) sont un ensemble de propriétés qui garantissent qu\'une transaction informatique est exécutée de façon fiable.\r\n\r\nDans le domaine des bases de données, une opération sur les données est appelée une transaction ou transaction informatique. Par exemple, un transfert de fonds d\'un compte de banque à un autre, même s\'il implique plusieurs actions comme le débit d\'un compte et le crédit d\'un autre, est une seule transaction.\r\n\r\nJim Gray a défini les propriétés qui garantissent des transactions fiables à la fin des années 1970 et a développé des technologies pour les mettre en œuvre automatiquement.\r\n\r\nEn 1983, Andreas Reuter et Theo Härder ont créé l\'acronyme ACID pour désigner ces propriétés.\r\n\r\nIl faut noter qu\'il existe des modèles de bases de données qui s\'écartent des propriétés ACID, pour répondre à d\'autres priorités comme la gestion de données massives et distribuées pour les usages du Big Data notamment par les géants d\'Internet: ce sont les bases NoSQL.\r\n\r\nWikipédia : https://fr.wikipedia.org/wiki/Propri%C3%A9t%C3%A9s_ACID', '2023-02-10 14:10:35', 1, 1),
                                                                                       (8, 'Merise', 'Merise est une méthode informatique dédiée à la modélisation qui analyse la structure à informatiser en terme de systèmes. Le gros avantage de cette méthode est qu’elle permet de cadrer le projet informatique et de « discuter » en se comprenant entre utilisateurs et informaticiens.\r\n\r\nCréée dans les années 70 sur commande de l’État français et destinée aux gros projets informatiques de l’époque, la méthode a perduré jusqu’à aujourd’hui. Son utilisation très répandue en Europe constitue un socle difficilement contournable lorsque l’on s’attache à la création de bases de données.\r\n\r\nMerise est en fait un outil analytique qui facilite la création de base de données et de projets informatique. Le principal auteur de la méthode est Hubert Tardieu qui se basa sur les travaux autour du modèle relationnel de Codd. Concrètement Merise (que l’on prononce Meurise) permet de :\r\n\r\nhiérarchiser les préoccupations du gestionnaire de projet informatique\r\ndécrire le fonctionnement du système à informatiser et notamment :\r\nLes données (MCD) : quelles sont les relations et les dépendances entres les différents acteurs (client – commande – produit – fournisseur par exemple)\r\nLes traitements (MCT) : comment les acteurs travaillent-ils ensemble (comment se passe une commande concrètement par exemple)\r\nproposer une implémentation logique (MLD, MLT) du point précédent\r\nProposer une construction concrète et utilisable du point précédent (MPD, MOT)\r\n\r\n\r\nArticle venant de https://www.base-de-donnees.com/merise/', '2023-02-13 10:27:46', 1, 1),
-                                                                                      (9, 'Mnesia', 'Mnesia est un système de gestion de base de données en temps réel distribué et souple écrit dans le langage de programmation Erlang . Il est distribué dans le cadre de la plate-forme Open Telecom.\r\n\r\nComme pour Erlang, Mnesia a été développé par Ericsson pour les travaux de calcul temps réel doux distribués et à haute disponibilité liés aux télécoms . Il n\'a pas été conçu comme un système général de gestion de base de données de traitement de données de bureau , ni pour remplacer les systèmes basés sur SQL . Au lieu de cela, Mnesia existe pour prendre en charge Erlang, où une persistance de type SGBD est requise. Il a plus en commun avec les SGBD intégrables tels que Berkeley DB qu\'avec n\'importe quel serveur de base de données SQL.\r\n\r\nLes \"lignes\" des tables sont représentées sous la forme d\'enregistrements contenant une valeur clé et un champ de données. Ce champ de données peut à son tour être un tuple contenant une structure de données Erlang de n\'importe quelle complexité.\r\n\r\nWikipédia : https://en.wikipedia.org/wiki/Mnesia', '2023-02-13 12:08:23', 0, 2);
+                                                                                      (9, 'Mnesia', 'Mnesia est un système de gestion de base de données en temps réel distribué et souple écrit dans le langage de programmation Erlang . Il est distribué dans le cadre de la plate-forme Open Telecom.\r\n\r\nComme pour Erlang, Mnesia a été développé par Ericsson pour les travaux de calcul temps réel doux distribués et à haute disponibilité liés aux télécoms . Il n\'a pas été conçu comme un système général de gestion de base de données de traitement de données de bureau , ni pour remplacer les systèmes basés sur SQL . Au lieu de cela, Mnesia existe pour prendre en charge Erlang, où une persistance de type SGBD est requise. Il a plus en commun avec les SGBD intégrables tels que Berkeley DB qu\'avec n\'importe quel serveur de base de données SQL.\r\n\r\nLes \"lignes\" des tables sont représentées sous la forme d\'enregistrements contenant une valeur clé et un champ de données. Ce champ de données peut à son tour être un tuple contenant une structure de données Erlang de n\'importe quelle complexité.\r\n\r\nWikipédia : https://en.wikipedia.org/wiki/Mnesia', '2023-02-13 12:08:23', 0, 2),
+                                                                                      (10, 'Je suis un programmeur débutant, j\'aimerais savoir ce qu\'est et à quoi sert réellement la programmation orientée objet ?', 'Version Courte:\r\n\r\nLa programmation orientée objet est un paradigme de programmation impérative. Elle sert à faciliter la modélisation du programme lors de la phase de conception.\r\n\r\nWow, minute, attend, qu\'est-ce que quoi ? Paradigme ? Modélisation ? On va y aller doucement, avec la…\r\n\r\nVersion Longue:\r\n\r\nUn paradigme, déjà, c\'est quoi ? Grossièrement, c\'est une façon de programmer. En réalité, ça va un peu plus loin. En effet, le langage façonne la pensée (c\'est à dire, qu\'on pense avec les mots dont on dispose, et non qu\'on crée des mots pour exprimer des concepts que l\'on pense sans mots pour les nommer), et ça n\'est pas très différent en informatique: le paradigme va façonner votre façon de concevoir votre programme (pour le meilleur et pour le pire).\r\n\r\nIl y a beaucoup de paradigmes, de sous-paradigmes, de sous-sous-sous-paradigmes, ils se croisent, s\'entrecroisent, on en utilise en général plusieurs à la fois, même si on n\'en a pas conscience, et ils sont plus ou moins compatibles entre eux.\r\n\r\nDans la programmation impérative, on pense le programme comme la suite des transitions entre ses états possibles, lesquelles transitions sont le produit du code écrit par le développeur. On dit au programme comment il doit accomplir son changement d\'état. Par exemple, en C, on change l\'état du programme en déclarant l\'existence d\'une variable, puis on change l\'état de cette variable en lui assignant une valeur, etc.\r\n\r\nCela s\'oppose à la programmation déclarative, dans laquelle on décrit l\'état désiré, et on laisse l\'implémentation du langage gérer la transition. Par exemple, en SQL, on décrit l\'état désiré (je veux une base dans tel état après une insertion, ou une mise à jour, avec telles conditions, etc) et on laisse l\'implémentation gérer la transition.\r\n\r\nLa programmation impérative est très certainement le paradigme que vous utilisez, peut-être sans le savoir. Parmi les sous-paradigmes de la programmation impérative, on trouve la programmation procédurale (ou orientée procédure), et la programmation orientée objet. Dans ces deux paradigmes, on définit des procédures et des fonctions.\r\n\r\nUne procédure est une suite d\'instructions qui va changer l\'état du programme. C\'est un peu comme une fonction (dans beaucoup de langages impératifs, les deux mots sont utilisés de façon quasi-interchangeables), sauf que ça ne retourne pas de résultat. Ca change juste l\'état du programme. Pensez au mot-clef void dans les langages C, C++, C# ou Java. Il définit une procédure.\r\n\r\nLa limite peut être floue. On peut avoir des procédures qui retournent un résultat pour indiquer si elle se sont déroulées correctement (et éventuellement, comment elles ont échoué, le cas échéant). Par exemple, la méthode add qu\'on retrouve sur les collections (Set, List, Queue, etc) en Java est une procédure, puisqu\'elle existe pour changer l\'état de la collection en y ajoutant des données, mais elle retourne un booleen qui vaut vrai si l\'ajout a bien été fait, et faux si la donnée n\'a pas été ajoutée pour n\'importe quelle raison (par exemple, si on tente d\'ajouter une donnée dans un Set alors qu\'il contient déjà cette donnée)\r\n\r\nOu à l\'inverse, on peut avoir des fonctions qui modifient l\'état du programme, en plus de retourner leur résultat (on appelle ça un effet de bord), par exemple une fonction qui modifierait un ou plusieurs de ses paramètres passés en référence.\r\n\r\nEn programmation procédurale, on sépare très fortement l\'état du programme de ses transitions. L\'état correspond aux données, ses transitions correspondent aux procédures. Le programme se pense alors comme la succession des procédures (lesquelles peuvent appeler des fonctions, ou d\'autres procédures). Le paradigme procédural est quasiment systématiquement celui qui est utilisé lorsqu\'on apprend les bases de la programmation. Si vous êtes très débutant, c\'est probablement celui que vous utilisez.\r\n\r\nEn programmation orientée objet, cette séparation n\'est pas aussi nette. On définit des objets, qui contiennent des membres. Ces membres peuvent être des données (des variables) qui définissent l\'état de l\'objet, on parle alors d\'attributs; ou des procédures (et des fonctions), qui définissent la façon dont l\'objet peut transitionner entre ses états, on parle alors de méthodes. On regroupe alors ensemble les données et le code qui va agir sur ces données. Le programme se pense alors comme l\'ensemble des objets qui le composent.\r\n\r\nVoilà pour ce qu\'est la programmation orientée objet. Maintenant, voyons à quoi elle sert.\r\n\r\nL\'avantage de la programmation procédurale est qu\'elle facilite énormément la conceptualisation du déroulement du programme. Elle convient très bien aux programmes qui utilisent un faible niveau d\'abstraction (systèmes d\'exploitations, pilotes de périphériques, etc). A l\'inverse, la programmation orientée objet facilite la modélisation des états du programme, tout en restant dans un paradigme impératif, ce qui peut bien convenir à des programmes qui exploitent un plus fort niveau d\'abstraction (applications de bureau, web services, etc).\r\n\r\nElle sert donc à faciliter (par rapport à la programmation procédurale) la conception du programme, dans certaines circonstances. Elle est très utilisées, car il se trouve que ces circonstances constituent la majorité des cas d\'utilisation de la programmation impérative.\r\n\r\nPar Antoine Berbineau\r\n\r\nDepuis Quora :\r\n\r\nhttps://fr.quora.com/Je-suis-un-programmeur-d%C3%A9butant-jaimerais-savoir-ce-quest-et-%C3%A0-quoi-sert-r%C3%A9ellement-la-programmation-orient%C3%A9e-objet', '2023-02-17 10:51:16', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -116,18 +111,15 @@ INSERT INTO `post` (`id`, `title`, `content`, `datecreate`, `visible`, `user_id`
 --
 
 DROP TABLE IF EXISTS `user`;
-CREATE TABLE IF NOT EXISTS `user` (
-                                      `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                                      `username` varchar(80) NOT NULL,
-                                      `usermail` varchar(200) NOT NULL,
-                                      `userpwd` varchar(255) NOT NULL,
-                                      `userscreen` varchar(400) NOT NULL,
-                                      `useruniqid` varchar(120) DEFAULT NULL COMMENT 'idententifiant unique',
-                                      `actif` tinyint(3) UNSIGNED DEFAULT 0 COMMENT '0 => inactif\n1  => actif\n2 => banni',
-                                      PRIMARY KEY (`id`),
-                                      UNIQUE KEY `username_UNIQUE` (`username`),
-                                      UNIQUE KEY `usermail_UNIQUE` (`usermail`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+CREATE TABLE `user` (
+                        `id` int(10) UNSIGNED NOT NULL,
+                        `username` varchar(80) NOT NULL,
+                        `usermail` varchar(200) NOT NULL,
+                        `userpwd` varchar(255) NOT NULL,
+                        `userscreen` varchar(400) NOT NULL,
+                        `useruniqid` varchar(120) DEFAULT NULL COMMENT 'idententifiant unique',
+                        `actif` tinyint(3) UNSIGNED DEFAULT 0 COMMENT '0 => inactif\n1  => actif\n2 => banni'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `user`
@@ -138,6 +130,62 @@ INSERT INTO `user` (`id`, `username`, `usermail`, `userpwd`, `userscreen`, `user
                                                                                                       (2, 'pierresandron', 'pierre.sandron@cf2m.be', '$2y$10$h02u1E3QfzqInuQupysvA.eYQZ4mBrDh4PblaNvpUiTnIXL60oEvq', 'Pierre Sandron', 'php_63e6095a9828f3.13666748', 1),
                                                                                                       (3, 'clovisreuss', 'webprod@cf2m.be', '$2y$10$QrXku6rYE9M09.UESZnYUO3HW5L4dynMftQm7tZ9AFZIpGfwJgYsO', 'Clovis Reuss', 'php_63e60ac4dfd358.31228917', 0),
                                                                                                       (4, 'andrepalmisano', 'andre.palmisano@cf2m.be', '$2y$10$chNKn69X0oJl/lnJdXctwe54HZYzdpD8ngZuULLBWUz/jMlg3VKga', 'André Palmisano', 'php_63e60bbf70fce4.56128222', 0);
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `category`
+--
+ALTER TABLE `category`
+    ADD PRIMARY KEY (`id`),
+    ADD UNIQUE KEY `title_UNIQUE` (`title`);
+
+--
+-- Index pour la table `category_has_post`
+--
+ALTER TABLE `category_has_post`
+    ADD PRIMARY KEY (`category_id`,`post_id`),
+    ADD KEY `fk_category_has_post_post1_idx` (`post_id`),
+    ADD KEY `fk_category_has_post_category1_idx` (`category_id`);
+
+--
+-- Index pour la table `post`
+--
+ALTER TABLE `post`
+    ADD PRIMARY KEY (`id`),
+    ADD KEY `fk_post_user_idx` (`user_id`);
+
+--
+-- Index pour la table `user`
+--
+ALTER TABLE `user`
+    ADD PRIMARY KEY (`id`),
+    ADD UNIQUE KEY `username_UNIQUE` (`username`),
+    ADD UNIQUE KEY `usermail_UNIQUE` (`usermail`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `category`
+--
+ALTER TABLE `category`
+    MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT pour la table `post`
+--
+ALTER TABLE `post`
+    MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT pour la table `user`
+--
+ALTER TABLE `user`
+    MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Contraintes pour les tables déchargées
