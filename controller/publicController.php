@@ -28,9 +28,13 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
 // si on est sur la partie catégorie
 }elseif(isset($_GET['categoryId'])&&ctype_digit($_GET['categoryId'])){
 
-    $detailError = "La page catégorie n'est pas encore créée ";
-    require "../view/publicView/public404View.php";
-    exit();
+    $categ = selectOneCategoryById($db,$_GET['categoryId']);
+    # if no Category
+    if(is_null($categ)) {
+        $detailError = "Cette catégorie n'existe plus ";
+        require "../view/publicView/public404View.php";
+        exit();
+    }
 
 // si on est sur la partie utilisateur
 }elseif(isset($_GET['userId'])&&ctype_digit($_GET['userId'])){
