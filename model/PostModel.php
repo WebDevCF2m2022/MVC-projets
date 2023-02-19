@@ -60,6 +60,32 @@ function postOneById(mysqli $db, int $id): array|Exception|null{
     return mysqli_fetch_assoc($query);
 }
 
+function postRubriqueAll(mysqli $db, int $idrub): array|Exception{
+    $sql = "SELECT p.id, p.title, LEFT(p.content, 255) AS contentshort, p.datecreate, u.id AS iduser, u.userscreen, 
+    GROUP_CONCAT(c.id) AS idcategory, 
+    GROUP_CONCAT(c.title SEPARATOR '||0||') AS titlecategory
+    FROM post p
+        INNER JOIN user u
+            ON p.user_id = u.id
+        LEFT JOIN category_has_post h 
+            ON p.id = h.post_id
+        LEFT JOIN category c 
+            ON c.id = h.category_id
+        LEFT JOIN category_has_post h2 
+            ON p.id = h2.post_id
+        LEFT JOIN category c2
+            ON c2.id = h2.category_id
+            WHERE h2.category_id = $idrub
+            GROUP BY p.id, p.datecreate
+    ORDER BY p.datecreate DESC;";
+
+    try{
+        $query = mysqli_query($db,$sql);
+    }catch(Exception $e){
+        die($e->getMessage());
+    }
+    return mysqli_fetch_all($query,MYSQLI_ASSOC);
+}
 
 // cut the text
 /**

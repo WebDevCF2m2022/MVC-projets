@@ -28,13 +28,18 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
 // si on est sur la partie catégorie
 }elseif(isset($_GET['categoryId'])&&ctype_digit($_GET['categoryId'])){
 
-    $categ = selectOneCategoryById($db,$_GET['categoryId']);
+    $idcateg = (int) $_GET['categoryId'];
+    $categ = selectOneCategoryById($db,$idcateg);
     # if no Category
     if(is_null($categ)) {
         $detailError = "Cette catégorie n'existe plus ";
         require "../view/publicView/public404View.php";
         exit();
     }
+    $recupAllPost = postRubriqueAll($db,$idcateg);
+    # Post count
+    $nbPost = count($recupAllPost);
+    require "../view/publicView/publicCategoryView.php";
 
 // si on est sur la partie utilisateur
 }elseif(isset($_GET['userId'])&&ctype_digit($_GET['userId'])){
