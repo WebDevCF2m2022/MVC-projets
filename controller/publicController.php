@@ -43,10 +43,22 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
 
 // si on est sur la partie utilisateur
 }elseif(isset($_GET['userId'])&&ctype_digit($_GET['userId'])){
+    $id = (int)$_GET['userId'];
 
-    $detailError = "La page utilisateur n'est pas encore créée ";
-    require "../view/publicView/public404View.php";
-    exit();
+    $recupUser = getOneUser($db,$id);
+
+    # if no User
+    if(is_null($recupUser)) {
+        $detailError = "Cet utilisateur n'existe plus ";
+        require "../view/publicView/public404View.php";
+        exit();
+    }
+
+    $recupAllPost = postRecupAllByUser($db,$id);
+    # Post count
+    $nbPost = count($recupAllPost);
+
+    require "../view/publicView/publicUserView.php";
 
 // sinon on est sur l'accueil    
 }else{
