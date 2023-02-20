@@ -57,7 +57,7 @@
                 ?>
                 <h2 class="fw-bolder mb-1">Nous avons <?=$nbPost?> article(s)</h2>
                 <?php
-                foreach($recup as $item):
+                foreach($recupAllPost as $item):
                     ?>
                     <!-- Post content-->
                     <article>

@@ -26,12 +26,11 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
     $recupcateg=recupAll($db,$id);
     
     
-    // $recupAllPost = postHomepageAll($db);//
+    $recupAllPost = postCategory($db,$id);
 
     # Post count
 
-
-    // $nbPost = count($recupAllPost); //
+    $nbPost = count($recupAllPost); 
 
 
 
