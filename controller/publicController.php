@@ -15,16 +15,50 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
     # one article by id
     $recupPost = postOneById($db,$idpost);
 
-    # ICI
-    var_dump($recupPost);
+    # if no Post
+    if(is_null($recupPost)){
+        $detailError = "Cet article n'existe plus ! ";
+        require "../view/publicView/public404View.php";
+        exit();
+    }
+
+    # detail's post view from VIEW
+    require "../view/publicView/publicPostDetailView.php";;
 
 // si on est sur la partie catégorie
-}elseif(isset($_GET['categoryId'])&&ctype_digit($_GET['categoryId'])){    
+}elseif(isset($_GET['categoryId'])&&ctype_digit($_GET['categoryId'])){
 
+    $idcateg = (int) $_GET['categoryId'];
+    $categ = selectOneCategoryById($db,$idcateg);
+    # if no Category
+    if(is_null($categ)) {
+        $detailError = "Cette catégorie n'existe plus ";
+        require "../view/publicView/public404View.php";
+        exit();
+    }
+    $recupAllPost = postRubriqueAll($db,$idcateg);
+    # Post count
+    $nbPost = count($recupAllPost);
+    require "../view/publicView/publicCategoryView.php";
 
 // si on est sur la partie utilisateur
-}elseif(isset($_GET['userId'])&&ctype_digit($_GET['userId'])){ 
+}elseif(isset($_GET['userId'])&&ctype_digit($_GET['userId'])){
+    $id = (int)$_GET['userId'];
 
+    $recupUser = getOneUser($db,$id);
+
+    # if no User
+    if(is_null($recupUser)) {
+        $detailError = "Cet utilisateur n'existe plus ";
+        require "../view/publicView/public404View.php";
+        exit();
+    }
+
+    $recupAllPost = postRecupAllByUser($db,$id);
+    # Post count
+    $nbPost = count($recupAllPost);
+
+    require "../view/publicView/publicUserView.php";
 
 // sinon on est sur l'accueil    
 }else{

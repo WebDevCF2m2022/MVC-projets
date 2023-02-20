@@ -2,10 +2,7 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1:3306
--- Généré le : dim. 19 fév. 2023 à 15:17
--- Version du serveur : 10.3.35-MariaDB
--- Version de PHP : 8.1.7
+
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -145,6 +142,7 @@ INSERT INTO `user` (`id`, `username`, `usermail`, `userpwd`, `userscreen`, `user
                                                                                                       (4, 'andrepalmisano', 'andre.palmisano@cf2m.be', '$2y$10$chNKn69X0oJl/lnJdXctwe54HZYzdpD8ngZuULLBWUz/jMlg3VKga', 'André Palmisano', 'php_63e60bbf70fce4.56128222', 0);
 
 --
+
 -- Contraintes pour les tables déchargées
 --
 

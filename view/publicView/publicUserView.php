@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>DB - BDD : Les bases de données</title>
+    <title>DB - BDD : <?=$recupUser['username']?></title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Core theme CSS (includes Bootstrap)-->
@@ -39,22 +39,22 @@
                 <!-- Post header-->
                 <header class="mb-4">
                     <!-- Post title-->
-                    <h1 class="fw-bolder mb-1">DB - BDD : Les bases de données</h1>
+                    <h1 class="fw-bolder mb-1">DB - BDD : <?=$recupUser['username']?></h1> <p class="fs-5 mb-4">Site de préparation du travail de groupe du <a href="https://github.com/WebDevCF2m2022/MVC-projets" target="_blank">CF2m</a> utilisant des morceaux d'articles libres depuis <a href="https://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Accueil_principal" target="_blank">Wikipédia</a>. Les spécifications techniques sont : MVC avec un dossier publique, PHP 8 procédural et MariaDB.</p>
                     <!-- Post meta content-->
                     
-                    <p class="fs-5 mb-4">Site de préparation du travail de groupe du <a href="https://github.com/WebDevCF2m2022/MVC-projets" target="_blank">CF2m</a> utilisant des morceaux d'articles libres depuis <a href="https://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Accueil_principal" target="_blank">Wikipédia</a>. Les spécifications techniques sont : MVC avec un dossier publique, PHP 8 procédural et MariaDB.</p>
-                    <?php // var_dump($_GET) ?>
+                    <p class="fs-5 mb-4">Login : <?=$recupUser['username']?> | nom complet : <?=$recupUser['userscreen']?> </p>
+                    <p class="fs-5 mb-4"></p>
                 </header>
                 <!-- Preview image figure-->
                 <!--<figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>-->
             <?php
             if(empty($nbPost)):
                 ?>
-                <h2 class="fw-bolder mb-1">Pas encore de message</h2>
+                <h2 class="fw-bolder mb-1">Pas encore de message par <?=$recupUser['userscreen']?></h2>
             <?php
             else:
                 ?>
-                <h2 class="fw-bolder mb-1">Nous avons <?=$nbPost?> article(s)</h2>
+                <h2 class="fw-bolder mb-1">Nous avons <?=$nbPost?> article(s) écrits par <?=$recupUser['userscreen']?></h2>
                 <?php
                 foreach($recupAllPost as $item):
                     ?>

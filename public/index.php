@@ -3,6 +3,7 @@
 require_once "../config.php";# DB
 require_once "../model/PostModel.php";# table post
 require_once "../model/CategoryModel.php";# table category
+require_once "../model/UserModel.php";# table user
 
 # Connexion
 try{
