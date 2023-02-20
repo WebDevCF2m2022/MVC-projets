@@ -16,11 +16,27 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
     $recupPost = postOneById($db,$idpost);
 
     # ICI
-    var_dump($recupPost);
+    require_once('../view/publicView/detailView.php');
 
 // si on est sur la partie catégorie
-}elseif(isset($_GET['categoryId'])&&ctype_digit($_GET['categoryId'])){    
+}elseif(isset($_GET['categoryId'])&&ctype_digit($_GET['categoryId'])){   
+    
+    $id = (int) $_GET['categoryId'];
 
+    $recupcateg=recupAll($db,$id);
+    
+    
+    // $recupAllPost = postHomepageAll($db);//
+
+    # Post count
+
+
+    // $nbPost = count($recupAllPost); //
+
+
+
+
+    include_once("../view/publicView/publicCategorieView.php");
 
 // si on est sur la partie utilisateur
 }elseif(isset($_GET['userId'])&&ctype_digit($_GET['userId'])){ 
