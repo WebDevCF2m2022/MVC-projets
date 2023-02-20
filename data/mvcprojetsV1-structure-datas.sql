@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.3
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1:3306
--- Généré le : dim. 19 fév. 2023 à 15:17
--- Version du serveur : 10.3.35-MariaDB
--- Version de PHP : 8.1.7
+-- Hôte : localhost:3306
+-- Généré le : lun. 20 fév. 2023 à 12:39
+-- Version du serveur : 10.3.36-MariaDB-0+deb10u2
+-- Version de PHP : 8.0.27
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -26,13 +26,11 @@ USE `mvcprojets`;
 --
 
 DROP TABLE IF EXISTS `category`;
-CREATE TABLE IF NOT EXISTS `category` (
-                                          `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                                          `title` varchar(100) NOT NULL,
-                                          `content` varchar(800) DEFAULT NULL,
-                                          PRIMARY KEY (`id`),
-                                          UNIQUE KEY `title_UNIQUE` (`title`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+CREATE TABLE `category` (
+                            `id` int(10) UNSIGNED NOT NULL,
+                            `title` varchar(100) NOT NULL,
+                            `content` varchar(800) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `category`
@@ -52,12 +50,9 @@ INSERT INTO `category` (`id`, `title`, `content`) VALUES
 --
 
 DROP TABLE IF EXISTS `category_has_post`;
-CREATE TABLE IF NOT EXISTS `category_has_post` (
-                                                   `category_id` int(10) UNSIGNED NOT NULL,
-                                                   `post_id` int(10) UNSIGNED NOT NULL,
-                                                   PRIMARY KEY (`category_id`,`post_id`),
-                                                   KEY `fk_category_has_post_post1_idx` (`post_id`),
-                                                   KEY `fk_category_has_post_category1_idx` (`category_id`)
+CREATE TABLE `category_has_post` (
+                                     `category_id` int(10) UNSIGNED NOT NULL,
+                                     `post_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -86,16 +81,14 @@ INSERT INTO `category_has_post` (`category_id`, `post_id`) VALUES
 --
 
 DROP TABLE IF EXISTS `post`;
-CREATE TABLE IF NOT EXISTS `post` (
-                                      `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                                      `title` varchar(200) NOT NULL,
-                                      `content` text NOT NULL,
-                                      `datecreate` datetime DEFAULT current_timestamp(),
-                                      `visible` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '0 => not visible\n1 => visible',
-                                      `user_id` int(10) UNSIGNED DEFAULT NULL,
-                                      PRIMARY KEY (`id`),
-                                      KEY `fk_post_user_idx` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+CREATE TABLE `post` (
+                        `id` int(10) UNSIGNED NOT NULL,
+                        `title` varchar(200) NOT NULL,
+                        `content` text NOT NULL,
+                        `datecreate` datetime DEFAULT current_timestamp(),
+                        `visible` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '0 => not visible\n1 => visible',
+                        `user_id` int(10) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `post`
@@ -121,18 +114,15 @@ INSERT INTO `post` (`id`, `title`, `content`, `datecreate`, `visible`, `user_id`
 --
 
 DROP TABLE IF EXISTS `user`;
-CREATE TABLE IF NOT EXISTS `user` (
-                                      `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                                      `username` varchar(80) NOT NULL,
-                                      `usermail` varchar(200) NOT NULL,
-                                      `userpwd` varchar(255) NOT NULL,
-                                      `userscreen` varchar(400) NOT NULL,
-                                      `useruniqid` varchar(120) DEFAULT NULL COMMENT 'idententifiant unique',
-                                      `actif` tinyint(3) UNSIGNED DEFAULT 0 COMMENT '0 => inactif\n1  => actif\n2 => banni',
-                                      PRIMARY KEY (`id`),
-                                      UNIQUE KEY `username_UNIQUE` (`username`),
-                                      UNIQUE KEY `usermail_UNIQUE` (`usermail`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+CREATE TABLE `user` (
+                        `id` int(10) UNSIGNED NOT NULL,
+                        `username` varchar(80) NOT NULL,
+                        `usermail` varchar(200) NOT NULL,
+                        `userpwd` varchar(255) NOT NULL,
+                        `userscreen` varchar(400) NOT NULL,
+                        `useruniqid` varchar(120) DEFAULT NULL COMMENT 'idententifiant unique',
+                        `actif` tinyint(3) UNSIGNED DEFAULT 0 COMMENT '0 => inactif\n1  => actif\n2 => banni'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `user`
@@ -143,6 +133,62 @@ INSERT INTO `user` (`id`, `username`, `usermail`, `userpwd`, `userscreen`, `user
                                                                                                       (2, 'pierresandron', 'pierre.sandron@cf2m.be', '$2y$10$h02u1E3QfzqInuQupysvA.eYQZ4mBrDh4PblaNvpUiTnIXL60oEvq', 'Pierre Sandron', 'php_63e6095a9828f3.13666748', 1),
                                                                                                       (3, 'clovisreuss', 'webprod@cf2m.be', '$2y$10$QrXku6rYE9M09.UESZnYUO3HW5L4dynMftQm7tZ9AFZIpGfwJgYsO', 'Clovis Reuss', 'php_63e60ac4dfd358.31228917', 0),
                                                                                                       (4, 'andrepalmisano', 'andre.palmisano@cf2m.be', '$2y$10$chNKn69X0oJl/lnJdXctwe54HZYzdpD8ngZuULLBWUz/jMlg3VKga', 'André Palmisano', 'php_63e60bbf70fce4.56128222', 0);
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `category`
+--
+ALTER TABLE `category`
+    ADD PRIMARY KEY (`id`),
+    ADD UNIQUE KEY `title_UNIQUE` (`title`);
+
+--
+-- Index pour la table `category_has_post`
+--
+ALTER TABLE `category_has_post`
+    ADD PRIMARY KEY (`category_id`,`post_id`),
+    ADD KEY `fk_category_has_post_post1_idx` (`post_id`),
+    ADD KEY `fk_category_has_post_category1_idx` (`category_id`);
+
+--
+-- Index pour la table `post`
+--
+ALTER TABLE `post`
+    ADD PRIMARY KEY (`id`),
+    ADD KEY `fk_post_user_idx` (`user_id`);
+
+--
+-- Index pour la table `user`
+--
+ALTER TABLE `user`
+    ADD PRIMARY KEY (`id`),
+    ADD UNIQUE KEY `username_UNIQUE` (`username`),
+    ADD UNIQUE KEY `usermail_UNIQUE` (`usermail`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `category`
+--
+ALTER TABLE `category`
+    MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT pour la table `post`
+--
+ALTER TABLE `post`
+    MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT pour la table `user`
+--
+ALTER TABLE `user`
+    MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Contraintes pour les tables déchargées
