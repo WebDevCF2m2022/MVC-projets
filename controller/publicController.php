@@ -41,7 +41,7 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
         include_once "../view/publicView/404View.php";
 
     }else{
-        $recupAllPost = postCategory($db, $id);
+        $recupAllPost = postByCategoryId($db, $id);
 
         # Post count
 
@@ -63,7 +63,16 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
         $error = "Cet utilisateur n'existe plus";
         // appel de la vue 404
         include_once "../view/publicView/404View.php";
+    }else{
+
+        $recupAllPost = postByUserId($db,$iduser);
+
+        # Post count
+        $nbPost = count($recupAllPost);
+
+        include_once "../view/publicView/publicUserView.php";
     }
+
 
 
 // sinon on est sur l'accueil    
