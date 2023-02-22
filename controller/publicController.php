@@ -15,8 +15,16 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
     # one article by id
     $recupPost = postOneById($db,$idpost);
 
-    # ICI
-    require_once('../view/publicView/detailView.php');
+    if(is_null($recupPost)){
+        // création de l'erreur pour la 404
+        $error = "Cet article n'existe plus";
+        // appel de la vue 404
+        include_once "../view/publicView/404View.php";
+        
+    }else{
+
+        require_once('../view/publicView/detailView.php');
+}
 
 // si on est sur la partie catégorie
 }elseif(isset($_GET['categoryId'])&&ctype_digit($_GET['categoryId'])){   
@@ -24,21 +32,38 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
     $id = (int) $_GET['categoryId'];
 
     $recupcateg=recupAll($db,$id);
-    
-    
-    $recupAllPost = postCategory($db,$id);
 
-    # Post count
+    // si 404 $recupcateg == null
+    if(is_null($recupcateg)){
+        // création de l'erreur pour la 404
+        $error = "Cet catégorie n'existe plus";
+        // appel de la vue 404
+        include_once "../view/publicView/404View.php";
 
-    $nbPost = count($recupAllPost); 
+    }else{
+        $recupAllPost = postCategory($db, $id);
+
+        # Post count
+
+        $nbPost = count($recupAllPost);
 
 
-
-
-    include_once("../view/publicView/publicCategorieView.php");
+        include_once("../view/publicView/publicCategorieView.php");
+}
 
 // si on est sur la partie utilisateur
 }elseif(isset($_GET['userId'])&&ctype_digit($_GET['userId'])){ 
+
+    $iduser = (int) $_GET['userId'];
+    $user = getOneUserById($db,$iduser);
+
+    // si 404 $user == null
+    if(is_null($user)){
+        // création de l'erreur pour la 404
+        $error = "Cet utilisateur n'existe plus";
+        // appel de la vue 404
+        include_once "../view/publicView/404View.php";
+    }
 
 
 // sinon on est sur l'accueil    

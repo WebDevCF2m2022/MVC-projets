@@ -79,6 +79,17 @@ function postCategory($db,int $idcateg){
     return mysqli_fetch_all($query,MYSQLI_ASSOC);
 }
 
-// truncate text
-
+// cut the text
+function trunCate ($text){
+    // fonction qui trouve un numérique qui est la dernière sous chaine dans une chaine pour remplacer $cut : " "
+    $cut = strrpos($text, ' ');
+    return substr ($text, 0,$cut);
+}
 // date fr
+  // Convertit une date ou un timestamp en français//
+  function dateToFrench($date, $format="l j F Y \à h \h i "){
+    $english_days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+    $french_days = array('lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche');
+    $english_months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+    $french_months = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
+    return str_replace($english_months, $french_months, str_replace($english_days, $french_days, date($format, strtotime($date) ) ) );}
