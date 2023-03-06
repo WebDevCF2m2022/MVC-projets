@@ -19,7 +19,7 @@ try{
 # Router
 
 // connected
-if(false){
+if(isset($_SESSION['myID'])&&$_SESSION['myID']==session_id()){
     require_once "../controller/privateController.php";
   
 // public

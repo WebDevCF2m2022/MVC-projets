@@ -73,7 +73,27 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
         include_once "../view/publicView/publicUserView.php";
     }
 
+// si on veut se connecter
+}elseif(isset($_GET['connect'])){ 
 
+    // si la personne a envoyé le formulaire
+    if(isset($_POST['username'],$_POST['userpwd'])){
+        $connect = connectUserByUsername($db,
+                                $_POST['username'],
+                                $_POST['userpwd']
+                            );
+        // si $connect est du texte
+        if(is_string($connect)) {
+            $message = $connect;
+        // sinon (par défaut un booléen)
+        }else{
+            header("Location: ./");
+            exit();
+        }
+    }
+
+    # View
+    include "../view/publicView/connectView.php";
 
 // sinon on est sur l'accueil    
 }else{
