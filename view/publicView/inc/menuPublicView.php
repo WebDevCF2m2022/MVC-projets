@@ -13,7 +13,7 @@
                 <?php
                 endforeach;
                 ?>
-                <li class="nav-item"><a class="nav-link" href="./">Connexion</a></li>
+                <li class="nav-item"><a class="nav-link" href="./?connect">Connexion</a></li>
             </ul>
         </div>
     </div>

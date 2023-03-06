@@ -1,4 +1,7 @@
 <?php
+# PHP SESSION CONNECT
+session_start();
+
 # Dependencies
 require_once "../config.php";# DB
 require_once "../model/PostModel.php";# table post
