@@ -30,6 +30,9 @@
                     <p class="fs-5 mb-4">Site de préparation du travail de groupe du <a href="https://github.com/WebDevCF2m2022/MVC-projets" target="_blank">CF2m</a> utilisant des morceaux d'articles libres depuis <a href="https://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Accueil_principal" target="_blank">Wikipédia</a>. Les spécifications techniques sont : MVC avec un dossier publique, PHP 8 procédural et MariaDB.</p>
                     <h3>DB - BDD : Accueil de l'administration <a href="./">Visitez notre site !</a></h3>
                 </header>
+                <?php
+var_dump($_SESSION);
+                ?>
                 
 
 </div>
