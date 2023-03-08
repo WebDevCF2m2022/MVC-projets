@@ -24,6 +24,8 @@ function postHomepageAll(mysqli $db): array{
 }
 
 // public detail Post by id
+// ?array < PHP 8
+// array|null > PHP 8
 function postOneById(mysqli $db, int $id): array|null{
     // si mauvais format : 0
     $id = (int) $id;

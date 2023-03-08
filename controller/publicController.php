@@ -20,9 +20,11 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
         $error = "Cet article n'existe plus";
         // appel de la vue 404
         include_once "../view/publicView/404View.php";
-        
+       
+    // on a trouvé l'article    
     }else{
 
+        // appel de la vue de l'article complet
         require_once('../view/publicView/detailView.php');
 }
 
@@ -31,7 +33,7 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
     
     $id = (int) $_GET['categoryId'];
 
-    $recupcateg=recupAll($db,$id);
+    $recupcateg=recupCategoryById($db,$id);
 
     // si 404 $recupcateg == null
     if(is_null($recupcateg)){
