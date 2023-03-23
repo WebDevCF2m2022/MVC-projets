@@ -6,7 +6,7 @@
 # echo __FILE__;
 
 # récupération du menu
-$recupMenu = getAllCategoryMenu($db);
+$recupMenu = getAllCategoryMenu($connectPDO);
 
 // si on est sur la partie "lire la suite" - détail de l'article
 if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
