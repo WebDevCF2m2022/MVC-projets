@@ -100,7 +100,7 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
 // sinon on est sur l'accueil    
 }else{
     # homepage's datas from MODEL
-    $recupAllPost = postHomepageAll($db);
+    $recupAllPost = postHomepageAll($connectPDO);
 
     # Post count
     $nbPost = count($recupAllPost);

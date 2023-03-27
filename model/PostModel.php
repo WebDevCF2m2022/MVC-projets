@@ -1,6 +1,6 @@
 <?php
 // public homepage function All Posts
-function postHomepageAll(mysqli $db): array{
+function postHomepageAll(PDO $db): array{
     $sql = "SELECT p.id, p.title, LEFT(p.content, 255) AS contentshort, p.datecreate, u.id AS iduser, u.userscreen, 
     GROUP_CONCAT(c.id) AS idcategory, 
     GROUP_CONCAT(c.title SEPARATOR '||0||') AS titlecategory
@@ -16,11 +16,11 @@ function postHomepageAll(mysqli $db): array{
     ORDER BY p.datecreate DESC;";
 
     try{
-        $query = mysqli_query($db,$sql);
+        $query = $db->query($sql);
     }catch(Exception $e){
         die($e->getMessage());
     }
-    return mysqli_fetch_all($query,MYSQLI_ASSOC);
+    return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
 // public detail Post by id
