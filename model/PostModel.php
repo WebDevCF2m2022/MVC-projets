@@ -26,7 +26,7 @@ function postHomepageAll(PDO $db): array{
 // public detail Post by id
 // ?array < PHP 8
 // array|null > PHP 8
-function postOneById(mysqli $db, int $id): array|null{
+function postOneById(PDO $db, int $id): array|bool{
     // si mauvais format : 0
     $id = (int) $id;
 
@@ -41,15 +41,16 @@ function postOneById(mysqli $db, int $id): array|null{
             ON p.id = h.post_id
         LEFT JOIN category c 
             ON c.id = h.category_id
-        WHERE p.id = $id
+        WHERE p.id = ?
             GROUP BY p.id;";
 
     try{
-        $query = mysqli_query($db,$sql);
+        $prepare = $db->prepare($sql);
+        $query = $prepare->execute([$id]);
     }catch(Exception $e){
         die($e->getMessage());
     }
-    return mysqli_fetch_assoc($query);
+    return $prepare->fetch(PDO::FETCH_ASSOC);
 }
 
 // public post by category id

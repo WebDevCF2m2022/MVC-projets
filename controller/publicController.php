@@ -13,9 +13,9 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
 
     $idpost = (int) $_GET['postId'];
     # one article by id
-    $recupPost = postOneById($db,$idpost);
+    $recupPost = postOneById($connectPDO,$idpost);
 
-    if(is_null($recupPost)){
+    if(is_bool($recupPost)){
         // création de l'erreur pour la 404
         $error = "Cet article n'existe plus";
         // appel de la vue 404
