@@ -6,16 +6,16 @@
 # echo __FILE__;
 
 # récupération du menu
-$recupMenu = getAllCategoryMenu($db);
+$recupMenu = getAllCategoryMenu($connectPDO);
 
 // si on est sur la partie "lire la suite" - détail de l'article
 if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
 
     $idpost = (int) $_GET['postId'];
     # one article by id
-    $recupPost = postOneById($db,$idpost);
+    $recupPost = postOneById($connectPDO,$idpost);
 
-    if(is_null($recupPost)){
+    if(is_bool($recupPost)){
         // création de l'erreur pour la 404
         $error = "Cet article n'existe plus";
         // appel de la vue 404
@@ -33,7 +33,7 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
     
     $id = (int) $_GET['categoryId'];
 
-    $recupcateg=recupCategoryById($db,$id);
+    $recupcateg=recupCategoryById($connectPDO,$id);
 
     // si 404 $recupcateg == null
     if(is_null($recupcateg)){
@@ -43,7 +43,7 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
         include_once "../view/publicView/404View.php";
 
     }else{
-        $recupAllPost = postByCategoryId($db, $id);
+        $recupAllPost = postByCategoryId($connectPDO, $id);
 
         # Post count
 
@@ -57,17 +57,17 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
 }elseif(isset($_GET['userId'])&&ctype_digit($_GET['userId'])){ 
 
     $iduser = (int) $_GET['userId'];
-    $user = getOneUserById($db,$iduser);
+    $user = getOneUserById($connectPDO,$iduser);
 
     // si 404 $user == null
-    if(is_null($user)){
+    if(is_bool($user)){
         // création de l'erreur pour la 404
         $error = "Cet utilisateur n'existe plus";
         // appel de la vue 404
         include_once "../view/publicView/404View.php";
     }else{
 
-        $recupAllPost = postByUserId($db,$iduser);
+        $recupAllPost = postByUserId($connectPDO,$iduser);
 
         # Post count
         $nbPost = count($recupAllPost);
@@ -80,7 +80,7 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
 
     // si la personne a envoyé le formulaire
     if(isset($_POST['username'],$_POST['userpwd'])){
-        $connect = connectUserByUsername($db,
+        $connect = connectUserByUsername($connectPDO,
                                 $_POST['username'],
                                 $_POST['userpwd']
                             );
@@ -100,7 +100,7 @@ if (isset($_GET['postId'])&&ctype_digit($_GET['postId'])) {
 // sinon on est sur l'accueil    
 }else{
     # homepage's datas from MODEL
-    $recupAllPost = postHomepageAll($db);
+    $recupAllPost = postHomepageAll($connectPDO);
 
     # Post count
     $nbPost = count($recupAllPost);

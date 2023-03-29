@@ -1,6 +1,6 @@
 <?php
 // public homepage function All Posts
-function postHomepageAll(mysqli $db): array{
+function postHomepageAll(PDO $db): array{
     $sql = "SELECT p.id, p.title, LEFT(p.content, 255) AS contentshort, p.datecreate, u.id AS iduser, u.userscreen, 
     GROUP_CONCAT(c.id) AS idcategory, 
     GROUP_CONCAT(c.title SEPARATOR '||0||') AS titlecategory
@@ -16,19 +16,24 @@ function postHomepageAll(mysqli $db): array{
     ORDER BY p.datecreate DESC;";
 
     try{
-        $query = mysqli_query($db,$sql);
+        $query = $db->query($sql);
     }catch(Exception $e){
         die($e->getMessage());
     }
-    return mysqli_fetch_all($query,MYSQLI_ASSOC);
+    // création d'une variable qui contient le résultat pour retirer le return de cette ligne (bp -> bonne pratique)
+    $bp = $query->fetchAll(PDO::FETCH_ASSOC);
+    // remet le curseur au début du jeu de résultat pour les DB compatibles, efface le résultat sous mysql et mariadb, il est donc facultatif mais recommandé
+    $query->closeCursor();
+    // on renvoie le résultat après la fermeture du jeu de résultat
+    return $bp;
 }
 
 // public detail Post by id
 // ?array < PHP 8
 // array|null > PHP 8
-function postOneById(mysqli $db, int $id): array|null{
+function postOneById(PDO $db, int $id): array|bool{
     // si mauvais format : 0
-    $id = (int) $id;
+    // $id = (int) $id;
 
     $sql = "SELECT p.id, p.title, p.content, p.datecreate, 
     u.id AS iduser, u.userscreen, 
@@ -41,19 +46,24 @@ function postOneById(mysqli $db, int $id): array|null{
             ON p.id = h.post_id
         LEFT JOIN category c 
             ON c.id = h.category_id
-        WHERE p.id = $id
+        WHERE p.id = ?
             GROUP BY p.id;";
 
     try{
-        $query = mysqli_query($db,$sql);
+        $prepare = $db->prepare($sql);
+        // mettre la valeur dans un tableau ne permet pas de vérifier ni le type ni la taille, c'est un raccourci de bindValue
+        $query = $prepare->execute([$id]);
     }catch(Exception $e){
         die($e->getMessage());
     }
-    return mysqli_fetch_assoc($query);
+    $bp = $prepare->fetch(PDO::FETCH_ASSOC);
+    $prepare->closeCursor();
+    return $bp;
+
 }
 
 // public post by category id
-function postByCategoryId(mysqli $db,int $idcateg): array{
+function postByCategoryId(PDO $db,int $idcateg): array{
     $sql = "SELECT p.id, p.title, LEFT(p.content, 255) AS contentshort, p.datecreate, u.id AS iduser, u.userscreen, 
     GROUP_CONCAT(c2.id) AS idcategory, 
     GROUP_CONCAT(c2.title SEPARATOR '||0||') AS titlecategory
@@ -69,20 +79,24 @@ function postByCategoryId(mysqli $db,int $idcateg): array{
             ON p.id = h2.post_id
         LEFT JOIN category c2 
             ON c2.id = h2.category_id
-        WHERE c.id = $idcateg
+        WHERE c.id = :id
             GROUP BY p.id
     ORDER BY p.datecreate DESC;";
 
+    $prepare = $db->prepare($sql);
+    $prepare->bindValue(':id',$idcateg,PDO::PARAM_INT);
     try{
-        $query = mysqli_query($db,$sql);
+        $prepare->execute();
     }catch(Exception $e){
         die($e->getMessage());
     }
-    return mysqli_fetch_all($query,MYSQLI_ASSOC);
+    $return = $prepare->fetchAll(PDO::FETCH_ASSOC);
+    $prepare->closeCursor();
+    return $return;
 }
 
 // public post by user id
-function postByUserId(mysqli $db,int $iduser): array{
+function postByUserId(PDO $db,int $iduser): array{
     $sql = "SELECT p.id, p.title, LEFT(p.content, 255) AS contentshort, p.datecreate, u.id AS iduser, u.userscreen, 
     GROUP_CONCAT(c.id) AS idcategory, 
     GROUP_CONCAT(c.title SEPARATOR '||0||') AS titlecategory
@@ -94,16 +108,18 @@ function postByUserId(mysqli $db,int $iduser): array{
         LEFT JOIN category c 
             ON c.id = h.category_id
        
-        WHERE u.id = $iduser
+        WHERE u.id = ?
             GROUP BY p.id
     ORDER BY p.datecreate DESC;";
-
+    $prepare = $db->prepare($sql);
     try{
-        $query = mysqli_query($db,$sql);
+        $prepare->execute([$iduser]);
     }catch(Exception $e){
         die($e->getMessage());
     }
-    return mysqli_fetch_all($query,MYSQLI_ASSOC);
+    $return = $prepare->fetchAll(PDO::FETCH_ASSOC);
+    $prepare->closeCursor();
+    return $return;
 }
 
 // cut the text

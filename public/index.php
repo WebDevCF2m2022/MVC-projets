@@ -8,13 +8,25 @@ require_once "../model/PostModel.php";# table post
 require_once "../model/CategoryModel.php";# table category
 require_once "../model/UserModel.php";# table user
 
-# Connexion
-try{
-    $db = mysqli_connect(DB_HOST,DB_LOGIN,DB_PWD,DB_NAME,DB_PORT);
-    mysqli_set_charset($db,DB_CHARSET);
+
+# Connexion PDO
+try {
+    $connectPDO = new PDO(
+        DB_TYPE.':host='.DB_HOST.';port='.DB_PORT.';dbname='.DB_NAME.';charset='.DB_CHARSET,
+        DB_LOGIN,
+        DB_PWD
+    );
+    // sur certains serveurs, l'affichage d'erreur est désactivé par défaut pour le driver (extension) PDO, ici on va choisir l'activation si on est en mode dev ou test, mais pas en prod (production voir config.php)
+    if(ENV=="dev"||ENV=="test"){
+        // activation de l'affichage des erreurs
+        $connectPDO->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+    }
+
 }catch(Exception $e){
-    exit($e->getMessage());
+    die($e->getMessage());
+
 }
+
 
 # Router
 
@@ -29,4 +41,4 @@ if(isset($_SESSION['myID'])&&$_SESSION['myID']==session_id()){
 
 
 # good practice
-mysqli_close($db);
+$connectPDO = null;
