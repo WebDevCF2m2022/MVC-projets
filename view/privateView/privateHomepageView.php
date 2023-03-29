@@ -41,7 +41,40 @@ if($postCount==0):
 else:
                 ?>
 <h3>Nous avons <?=$postCount?> article(s)</h3>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>title</th>
+            <th>contentshort</th>
+            <th>datecreate</th>
+            <th>visible</th>
+            <th>userscreen</th>
+            <th>titlecategory</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+    </thead><tbody>
                 <?php
+    foreach($postAll as $item):
+    ?>
+<tr>
+    <td><?=$item['id']?></td>
+            <td>title</td>
+            <td>contentshort</td>
+            <td>datecreate</td>
+            <td>visible</td>
+            <td>userscreen</td>
+            <td>titlecategory</td>
+            <td>Update</td>
+            <td>Delete</td>
+</tr>
+    <?php
+    endforeach;
+    ?>
+ </tbody>
+</table>
+    <?php
 endif;
                 ?>
                 
