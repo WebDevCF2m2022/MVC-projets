@@ -1,5 +1,5 @@
 <?php
-// public homepage function All Posts
+// public homepage function All Posts if visible = 1
 function postHomepageAll(PDO $db): array{
     $sql = "SELECT p.id, p.title, LEFT(p.content, 255) AS contentshort, p.datecreate, u.id AS iduser, u.userscreen, 
     GROUP_CONCAT(c.id) AS idcategory, 
@@ -11,7 +11,7 @@ function postHomepageAll(PDO $db): array{
             ON p.id = h.post_id
         LEFT JOIN category c 
             ON c.id = h.category_id
-        #WHERE p.id =77
+        WHERE p.visible = 1
             GROUP BY p.id
     ORDER BY p.datecreate DESC;";
 
@@ -136,3 +136,39 @@ function postByUserId(PDO $db,int $iduser): array{
     $english_months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
     $french_months = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
     return str_replace($english_months, $french_months, str_replace($english_days, $french_days, date($format, strtotime($date) ) ) );}
+
+
+    /*
+ADMIN FUNCTIONS
+    */
+
+// private admin homepage function All Posts
+function postAdminHomepageAll(PDO $db): array{
+    $sql = "SELECT p.id, p.title, LEFT(p.content, 255) AS contentshort, p.datecreate, p.visible,
+    u.id AS iduser, u.userscreen, 
+    GROUP_CONCAT(c.id) AS idcategory, 
+    GROUP_CONCAT(c.title SEPARATOR '||0||') AS titlecategory
+    FROM post p
+        LEFT JOIN user u
+            ON p.user_id = u.id
+        LEFT JOIN category_has_post h 
+            ON p.id = h.post_id
+        LEFT JOIN category c 
+            ON c.id = h.category_id
+            #WHERE p.id =150
+            GROUP BY p.id
+        
+    ORDER BY p.datecreate DESC;";
+
+    try{
+        $query = $db->query($sql);
+    }catch(Exception $e){
+        die($e->getMessage());
+    }
+    // création d'une variable qui contient le résultat pour retirer le return de cette ligne (bp -> bonne pratique)
+    $bp = $query->fetchAll(PDO::FETCH_ASSOC);
+    // remet le curseur au début du jeu de résultat pour les DB compatibles, efface le résultat sous mysql et mariadb, il est donc facultatif mais recommandé
+    $query->closeCursor();
+    // on renvoie le résultat après la fermeture du jeu de résultat
+    return $bp;
+}
