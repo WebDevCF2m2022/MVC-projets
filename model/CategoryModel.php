@@ -11,13 +11,16 @@ function getAllCategoryMenu(PDO $db): array {
 }
 
 // récupère une catégorie complète
-function recupCategoryById(mysqli $db,int $id):array|null{
-    $recup = "SELECT * FROM category where id=$id";
+function recupCategoryById(PDO $db,int $id):array|bool{
+    $recup = "SELECT * FROM category where id=?";
+    $prepare = $db -> prepare($recup);
     try{
-        $query=mysqli_query($db,$recup);
+        $prepare->execute([$id]);
     }catch(Exception $e){
         die($e->getMessage());
     }
-    return mysqli_fetch_assoc($query);
+    $bp = $prepare->fetch(PDO::FETCH_ASSOC);
+    $prepare->closeCursor();
+    return $bp;
 }
 

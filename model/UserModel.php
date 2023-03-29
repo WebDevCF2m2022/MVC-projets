@@ -4,38 +4,38 @@
 
 /**
  * 
- * @param mysqli $mydb
+ * @param PDO $mydb
  * @param int $iduser
  * 
  * @return array|null
  */
-function getOneUserById(mysqli $mydb, int $iduser): array|null {
+function getOneUserById(PDO $mydb, int $iduser): array|bool {
 
-    $sql="SELECT id, username, userscreen FROM user WHERE id=$iduser";
+    $sql="SELECT id, username, userscreen FROM user WHERE id=?";
+    $prepare = $mydb->prepare($sql);
     try{
-        $query = mysqli_query($mydb,$sql);
+        $prepare->execute([$iduser]);
     }catch(Exception $e){
         die($e->getMessage());
     }
-    return mysqli_fetch_assoc($query);
+    $return = $prepare->fetch(PDO::FETCH_ASSOC);
+    $prepare->closeCursor();
+    return $return;
 }
 
-function connectUserByUsername(mysqli $db, string $uname, string $pwd) :bool|string {
-    // protection des chaînes contre injection sql
-    $uname = mysqli_real_escape_string($db,$uname);
-    $pwd = mysqli_real_escape_string($db,$pwd);
+function connectUserByUsername(PDO $db, string $uname, string $pwd) :bool|string {
 
     // sql, on prend l'utilisateur si il existe même si son mot de passe ne correspond pas
-    $sql = "SELECT * FROM user WHERE username='$uname'";
-
+    $sql = "SELECT * FROM user WHERE username=?";
+    $prepare = $db->prepare($sql);
     try{
-        $query = mysqli_query($db,$sql);
+        $prepare->execute([$uname]);
     }catch(Exception $e){
         die($e->getMessage());
     }
     // si on a un user
-    if(mysqli_num_rows($query)==1){
-        $response = mysqli_fetch_assoc($query);
+    if($prepare->rowCount()==1){
+        $response = $prepare->fetch(PDO::FETCH_ASSOC);
         // on vérifie si le mot de passe crypté dans la DB correspond à celui entré par l'utilisateur
         if(password_verify($pwd,$response['userpwd'])){
             // création d'une session valide
