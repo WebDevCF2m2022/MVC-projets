@@ -31,6 +31,8 @@
                     <h3>DB - BDD : Accueil de l'administration</a></h3>
                     <h4>Bienvenue <?=$_SESSION['userscreen']?></h4>
                 </header>
+        </div>
+        <div class="col-lg-12">
                 <?php
 // Pas de post
 if($postCount==0):
@@ -41,7 +43,7 @@ if($postCount==0):
 else:
                 ?>
 <h3>Nous avons <?=$postCount?> article(s)</h3>
-<table>
+<table cellpadding=10>
     <thead>
         <tr>
             <th>ID</th>
@@ -56,18 +58,26 @@ else:
         </tr>
     </thead><tbody>
                 <?php
+    // tant qu'on a des postes            
     foreach($postAll as $item):
+        if($item['visible']!=1){
+            $color="darkgrey";
+            $link = "<a href='?postVisible=1&id={$item['id']}'>Activer</a>";
+        }else{
+            $color="white";
+            $link = "<a href='?postVisible=0&id={$item['id']}'>Désactiver</a>";
+        }
     ?>
-<tr>
+<tr style="background-color:<?=$color?>;">
     <td><?=$item['id']?></td>
-            <td>title</td>
-            <td>contentshort</td>
-            <td>datecreate</td>
-            <td>visible</td>
-            <td>userscreen</td>
-            <td>titlecategory</td>
-            <td>Update</td>
-            <td>Delete</td>
+            <td><?=$item['title']?></td>
+            <td><?=$item['contentshort']?></td>
+            <td><?=$item['datecreate']?></td>
+            <td><?=$link?></td>
+            <td><?=$item['userscreen']?></td>
+            <td><?=$item['titlecategory']?></td>
+            <td><a href="?updatePost=<?=$item['id']?>">update</a></td>
+            <td><a href="?deletePost=<?=$item['id']?>">delete</a></td>
 </tr>
     <?php
     endforeach;
@@ -78,8 +88,9 @@ else:
 endif;
                 ?>
                 
-
-</div>
+                </div>
+            </div>
+            </div>
 
 <!-- Footer-->
 <footer class="py-5 bg-dark">

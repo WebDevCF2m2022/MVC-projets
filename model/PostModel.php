@@ -13,7 +13,7 @@ function postHomepageAll(PDO $db): array{
             ON c.id = h.category_id
         WHERE p.visible = 1
             GROUP BY p.id
-    ORDER BY p.datecreate DESC;";
+    ORDER BY p.datecreate DESC, p.id DESC;";
 
     try{
         $query = $db->query($sql);
@@ -158,7 +158,7 @@ function postAdminHomepageAll(PDO $db): array{
             #WHERE p.id =150
             GROUP BY p.id
         
-    ORDER BY p.datecreate DESC;";
+    ORDER BY p.datecreate DESC, p.id DESC;";
 
     try{
         $query = $db->query($sql);
@@ -171,4 +171,15 @@ function postAdminHomepageAll(PDO $db): array{
     $query->closeCursor();
     // on renvoie le résultat après la fermeture du jeu de résultat
     return $bp;
+}
+// changement de la visibilité d'un post sur la page d'accueil de l'admin
+function postAdminUpdateVisible(PDO $db, int $id, int $visible):bool{
+    $sql="UPDATE `post` SET `visible` = ? WHERE `id` = ?;";
+    $prepare = $db->prepare($sql);
+    try{
+        $prepare->execute([$visible,$id]);
+    }catch(Exception $e){
+        die($e->getMessage());
+    }
+    return $prepare->rowCount();
 }
