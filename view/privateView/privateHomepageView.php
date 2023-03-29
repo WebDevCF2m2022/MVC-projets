@@ -33,6 +33,7 @@
                 </header>
         </div>
         <div class="col-lg-12">
+            <h3><?php if(isset($_GET['m'])) echo $_GET['m']; ?></h3>
                 <?php
 // Pas de post
 if($postCount==0):
@@ -77,7 +78,7 @@ else:
             <td><?=$item['userscreen']?></td>
             <td><?=$item['titlecategory']?></td>
             <td><a href="?updatePost=<?=$item['id']?>">update</a></td>
-            <td><a href="?deletePost=<?=$item['id']?>">delete</a></td>
+            <td><a onclick="void(0);let a=confirm('Voulez-vous vraiment supprimer \'<?=$item['title']?>\' ?'); if(a){ document.location = '?deletePost=<?=$item['id']?>'; };" href="#">delete</a></td>
 </tr>
     <?php
     endforeach;
