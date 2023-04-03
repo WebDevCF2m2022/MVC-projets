@@ -27,6 +27,12 @@ if (isset($_GET['disconnect'])) {
         exit();
     }
 
+// on veut ajouter un Post   
+}elseif(isset($_GET['createPost'])){
+
+    // appel de la vue pour insertion
+    include "../view/privateView/privateInsertView.php";
+
 // on veut supprimer un post    
 }elseif(isset($_GET['deletePost'])&&ctype_digit($_GET['deletePost'])){
 

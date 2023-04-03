@@ -29,7 +29,7 @@
                     
                     <p class="fs-5 mb-4">Site de préparation du travail de groupe du <a href="https://github.com/WebDevCF2m2022/MVC-projets" target="_blank">CF2m</a> utilisant des morceaux d'articles libres depuis <a href="https://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Accueil_principal" target="_blank">Wikipédia</a>. Les spécifications techniques sont : MVC avec un dossier publique, PHP 8 procédural et MariaDB.</p>
                     <h3>DB - BDD : Accueil de l'administration</a></h3>
-                    <h4>Bienvenue <?=$_SESSION['userscreen']?></h4>
+                    <h4>Bienvenue <?=$_SESSION['userscreen']?></h4> 
                 </header>
         </div>
         <div class="col-lg-12">
@@ -93,13 +93,4 @@ endif;
             </div>
             </div>
 
-<!-- Footer-->
-<footer class="py-5 bg-dark">
-    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2022</p></div>
-</footer>
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="js/scripts.js"></script>
-</body>
-</html>
+            <?php include "../view/footerView.php"; ?>

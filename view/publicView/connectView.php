@@ -21,7 +21,7 @@ include_once "inc/menuPublicView.php";
     <div class="row">
         <div class="col-lg-8">
 
-                <!-- Post header-->
+                <!-- Post header--> 
                 <header class="mb-4">
                     <!-- Post title-->
                     <h1 class="fw-bolder mb-1">DB - BDD : Connexion</h1>
@@ -57,13 +57,4 @@ include_once "inc/menuPublicView.php";
 
 </div>
 
-<!-- Footer-->
-<footer class="py-5 bg-dark">
-    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2022</p></div>
-</footer>
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="js/scripts.js"></script>
-</body>
-</html>
+<?php include "../view/footerView.php"; ?>
