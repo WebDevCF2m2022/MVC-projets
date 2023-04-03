@@ -197,3 +197,8 @@ function postAdminDeleteById(PDO $db, int $id): bool {
     }
 
 }
+
+// ON EST LA
+function postAdminInsert(PDO $db, int $idUser, string $title, string $content, array $idCateg=[]):bool{
+    return true;
+}

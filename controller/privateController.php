@@ -30,6 +30,11 @@ if (isset($_GET['disconnect'])) {
 // on veut ajouter un Post   
 }elseif(isset($_GET['createPost'])){
 
+    // si on a envoyé le formulaire
+    if(isset($_POST['title'],$_POST['content'],$_POST['user_id'])){
+        
+    }
+
     // Appel des catégories pour le multi-choix dans le formulaire
     $categoryChoice = getAllCategoryMenu($connectPDO);
 

@@ -26,7 +26,9 @@ function getOneUserById(PDO $mydb, int $iduser): array|bool {
 function getAllUsers(PDO $mydb): array {
     try{
         $query = $mydb->query("SELECT id, userscreen FROM user ORDER BY userscreen ASC;");
-        return $query->fetchAll(PDO::FETCH_ASSOC);
+        $out = $query->fetchAll(PDO::FETCH_ASSOC);
+        $query->closeCursor();
+        return $out;
     }catch(Exception $e){
         die($e->getMessage());
     }
