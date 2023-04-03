@@ -30,6 +30,12 @@ if (isset($_GET['disconnect'])) {
 // on veut ajouter un Post   
 }elseif(isset($_GET['createPost'])){
 
+    // Appel des catégories pour le multi-choix dans le formulaire
+    $categoryChoice = getAllCategoryMenu($connectPDO);
+
+    // Appel des utilisateurs
+    $userChoice = getAllUsers($connectPDO);
+
     // appel de la vue pour insertion
     include "../view/privateView/privateInsertView.php";
 

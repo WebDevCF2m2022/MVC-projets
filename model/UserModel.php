@@ -23,6 +23,15 @@ function getOneUserById(PDO $mydb, int $iduser): array|bool {
     return $return;
 }
 
+function getAllUsers(PDO $mydb): array {
+    try{
+        $query = $mydb->query("SELECT id, userscreen FROM user ORDER BY userscreen ASC;");
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }catch(Exception $e){
+        die($e->getMessage());
+    }
+}
+
 function connectUserByUsername(PDO $db, string $uname, string $pwd) :bool|string {
 
     // sql, on prend l'utilisateur si il existe même si son mot de passe ne correspond pas
