@@ -198,7 +198,7 @@ function postAdminDeleteById(PDO $db, int $id): bool {
 
 }
 
-// ON EST LA
+// ON EST LA // EXERCICE Pouvoir insérer un article AVEC ses catégories, si possible avec une transaction
 function postAdminInsert(PDO $db, int $idUser, string $title, string $content, array $idCateg=[]):bool{
     return true;
 }
