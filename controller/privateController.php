@@ -37,7 +37,7 @@ if (isset($_GET['disconnect'])) {
         $postContent = htmlspecialchars(strip_tags(trim($_POST['content'])),ENT_QUOTES);
         $idCateg = (isset($_POST['category_id'])&&is_array($_POST['category_id']))? $_POST['category_id'] : [];
 
-        // EXERCICE Pouvoir insérer un article AVEC ses catégories
+        // EXERCICE Pouvoir insérer un article AVEC ses catégories                                                              !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         postAdminInsert($connectPDO,$UserId,$postTitle,$postContent,$idCateg);
     }
 

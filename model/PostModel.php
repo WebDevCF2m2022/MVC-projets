@@ -200,5 +200,41 @@ function postAdminDeleteById(PDO $db, int $id): bool {
 
 // ON EST LA // EXERCICE Pouvoir insérer un article AVEC ses catégories, si possible avec une transaction
 function postAdminInsert(PDO $db, int $idUser, string $title, string $content, array $idCateg=[]):bool{
+    $db->beginTransaction();
+    try{
+    $sql = $db->prepare("INSERT INTO post (title, content, user_id) VALUES (?,?,?)");
+    $sql->bindParam(1,$title,PDO::PARAM_STR);
+    $sql->bindParam(2,$content,PDO::PARAM_STR);
+    $sql->bindParam(3,$idUser,PDO::PARAM_INT);
+    $sql->execute();
+    $idLastPost = $db->lastInsertId();
+    #$db->commit();
+   
+    #$db->beginTransaction();
+    foreach ($idCateg as  $item):
+       /* foreach ($pr as $key => &$val) {
+            $csql->bindParam($key, $val);
+        }*/
+    $sqlPostHasCategory = $db->prepare("INSERT INTO category_has_post (category_id,post_id) VALUES (?,?)");
+    $sqlPostHasCategory->bindParam(1,$item,PDO::PARAM_INT);
+    $sqlPostHasCategory->bindParam(2,$idLastPost,PDO::PARAM_INT);
+    
+    $sqlPostHasCategory->execute();
+    endforeach;
+    $db->commit();
+    /*echo "idCateg";
+    var_dump($idCateg);
+    echo "idUser";
+    var_dump($idUser);
+    echo "idLastPost";
+    var_dump($idLastPost);*/
+    
+}catch(Exception $e){
+    $e = "Un problème est survenu lors de l'ajout de votre article ";
+    $db->rollBack();
+
+   }
+
+    
     return true;
 }
