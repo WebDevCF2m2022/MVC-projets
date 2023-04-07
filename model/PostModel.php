@@ -209,18 +209,22 @@ function postAdminInsert(PDO $db, int $idUser, string $title, string $content, a
     $sql->execute();
     $idLastPost = $db->lastInsertId();
     #$db->commit();
-   
+    if(!empty($idCateg)){
     #$db->beginTransaction();
-    foreach ($idCateg as  $item):
+    $sqlPostHasCategory = $db->prepare("INSERT INTO category_has_post (category_id,post_id) VALUES (?,?)");
+    foreach ($idCateg as  $item){
        /* foreach ($pr as $key => &$val) {
             $csql->bindParam($key, $val);
         }*/
-    $sqlPostHasCategory = $db->prepare("INSERT INTO category_has_post (category_id,post_id) VALUES (?,?)");
+        if(ctype_digit(($item))){
+    
     $sqlPostHasCategory->bindParam(1,$item,PDO::PARAM_INT);
     $sqlPostHasCategory->bindParam(2,$idLastPost,PDO::PARAM_INT);
     
     $sqlPostHasCategory->execute();
-    endforeach;
+        }
+    }
+    }
     $db->commit();
     /*echo "idCateg";
     var_dump($idCateg);
