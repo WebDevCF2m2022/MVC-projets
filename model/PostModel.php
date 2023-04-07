@@ -198,7 +198,7 @@ function postAdminDeleteById(PDO $db, int $id): bool {
 
 }
 
-// ON EST LA // EXERCICE Pouvoir insérer un article AVEC ses catégories, si possible avec une transaction
+//  Pouvoir insérer un article AVEC ses catégories, AVEC une transaction
 function postAdminInsert(PDO $db, int $idUser, string $title, string $content, array $idCateg=[]):bool{
     // début de transaction, arrête les autocommit, il faut appeler $db->commit() pour que toutes les requêtes soient effectivement validées
     $db->beginTransaction();
@@ -251,4 +251,10 @@ if(!empty($idCateg)){
         die($e->getMessage());
     }
 
+}
+
+// on veut modifier un post, avec les catégories qui ne se trouvent pas dans la table post: action avec plusieures requêtes = transaction
+function postAdminUpdate(PDO $db, array $postForm){
+    // on est ICI et aucune variable n'a PAS été vérifiée !
+    var_dump($postForm);
 }
