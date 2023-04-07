@@ -133,8 +133,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `useruniqid` varchar(120) DEFAULT NULL COMMENT 'idententifiant unique',
   `actif` tinyint(3) UNSIGNED DEFAULT 0 COMMENT '0 => inactif\n1  => actif\n2 => banni',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `username_UNIQUE` (`username`),
-  UNIQUE KEY `usermail_UNIQUE` (`usermail`)
+  UNIQUE KEY `username_UNIQUE` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

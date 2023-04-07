@@ -32,13 +32,16 @@ if (isset($_GET['disconnect'])) {
 
     // si on a envoyé le formulaire
     if(isset($_POST['title'],$_POST['content'],$_POST['user_id'])){
-        $UserId = (int) $_POST['user_id'];
+        $UserId = (int) $_POST['user_id']; // si erreur => 0
         $postTitle = htmlspecialchars(strip_tags(trim($_POST['title'])),ENT_QUOTES);
         $postContent = htmlspecialchars(strip_tags(trim($_POST['content'])),ENT_QUOTES);
+        // ternaire ! si tableau les valeurs et clefs ne sont pas protégée contre une manipulation externe (injection etc...)
         $idCateg = (isset($_POST['category_id'])&&is_array($_POST['category_id']))? $_POST['category_id'] : [];
 
-        // EXERCICE Pouvoir insérer un article AVEC ses catégories
-        postAdminInsert($connectPDO,$UserId,$postTitle,$postContent,$idCateg);
+if(!empty($UserId)&&!empty($postTitle)&&!empty($postContent)) {
+    // EXERCICE Pouvoir insérer un article AVEC ses catégories
+    postAdminInsert($connectPDO, $UserId, $postTitle, $postContent, $idCateg);
+}
     }
 
     // Appel des catégories pour le multi-choix dans le formulaire
