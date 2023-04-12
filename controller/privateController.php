@@ -62,7 +62,12 @@ if (isset($_GET['disconnect'])) {
     // si on a envoyé le formulaire de modification
     if(isset($_POST['title'])){
         // pas de vérification des variables $_POST au niveau du contrôleur !!! -> TOUTES LES Vérification doivent se trouver dans la fonction ! 
-        postAdminUpdate($connectPDO,$_POST); 
+        $post = postAdminUpdate($connectPDO,$_POST); 
+        // si le retour est une chaîne de caractère
+        if(is_string($post)){
+            // affichage de l'erreur
+            $message = $post;
+        }
     }
 
     $idUpdatePost = (int) $_GET['updatePost'];

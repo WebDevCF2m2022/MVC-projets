@@ -254,7 +254,40 @@ if(!empty($idCateg)){
 }
 
 // on veut modifier un post, avec les catégories qui ne se trouvent pas dans la table post: action avec plusieures requêtes = transaction
-function postAdminUpdate(PDO $db, array $postForm){
+function postAdminUpdate(PDO $db, array $postForm): bool|string {
     // on est ICI et aucune variable n'a PAS été vérifiée !
-    var_dump($postForm); 
+     var_dump($postForm); 
+
+    // si il n'existe pas de post 'id' (champs caché) ou qu'il ne correspond pas au champs dans l'URL (hack)
+    if(!isset($_POST['id'])||$_POST['id']!=$_GET['updatePost']){
+        return "Le champs id ne correspond pas !";
+    }
+
+    // pour récupérer les variables on peut utiliser extract 
+    // !!! c'est un danger de sécurité, ici on l'utilise car seul l'admin a accès au formulaire
+    // on va utiliser un préfix 'myPostTable' pour éviter toute collision
+    // doc : https://www.php.net/manual/fr/function.extract.php
+
+    extract($_POST,EXTR_PREFIX_ALL,"myPostTable");
+    // echo $myPostTable_id;
+
+    // protection des variables (l'extract est donc peu utile dans notre cas):
+    $myPostTable_id = (int) $myPostTable_id;
+    $myPostTable_title = htmlspecialchars(strip_tags(trim($myPostTable_title)),ENT_QUOTES);
+    $myPostTable_content = htmlspecialchars(strip_tags(trim($myPostTable_content)),ENT_QUOTES);
+    // transforme en timestamp, retourne false en cas d'échec - doc : https://www.php.net/manual/fr/function.strtotime.php
+    $myPostTable_datecreate = strtotime($myPostTable_datecreate); 
+    $myPostTable_user_id = (int) $myPostTable_user_id;
+
+    // si tout est valide
+    if(!empty($myPostTable_id)&&!empty($myPostTable_title)&&!empty($myPostTable_content)&&!empty($myPostTable_user_id)&& $myPostTable_datecreate!=false){
+        // début de transaction
+        $db->beginTransaction();
+
+    }else{
+        return "Un des champs n'est pas au format valide";
+    }
+
+
+    return true;
 }
