@@ -35,6 +35,7 @@
         <div class="col-lg-12">
         <h3>Mettre à jour un article :  </h3>
                     <form method="POST" action="" name="Insert">
+                      <input type="hidden" name="id" value="<?=$recupPost['id']?>" />
                     <?php
       if(isset($message)):
     ?>
