@@ -259,7 +259,7 @@ function postAdminUpdate(PDO $db, array $postForm): bool|string {
      var_dump($postForm); 
 
     // si il n'existe pas de post 'id' (champs caché) ou qu'il ne correspond pas au champs dans l'URL (hack)
-    if(!isset($_POST['id'])||$_POST['id']!=$_GET['updatePost']){
+    if(!isset($postForm['id'])||$postForm['id']!=$_GET['updatePost']){
         return "Le champs id ne correspond pas !";
     }
 
@@ -268,7 +268,7 @@ function postAdminUpdate(PDO $db, array $postForm): bool|string {
     // on va utiliser un préfix 'myPostTable' pour éviter toute collision
     // doc : https://www.php.net/manual/fr/function.extract.php
 
-    extract($_POST,EXTR_PREFIX_ALL,"myPostTable");
+    extract($postForm,EXTR_PREFIX_ALL,"myPostTable");
     // echo $myPostTable_id;
 
     // protection des variables (l'extract est donc peu utile dans notre cas):
@@ -281,8 +281,38 @@ function postAdminUpdate(PDO $db, array $postForm): bool|string {
 
     // si tout est valide
     if(!empty($myPostTable_id)&&!empty($myPostTable_title)&&!empty($myPostTable_content)&&!empty($myPostTable_user_id)&& $myPostTable_datecreate!=false){
+        // converstion de timestamp en datetime
+        $myPostTable_datecreate_datetime = date("Y-m-d H:i:s",$myPostTable_datecreate);
         // début de transaction
         $db->beginTransaction();
+        // on écrit la requête
+        $sql = "UPDATE `post` SET `title` = :title, `content` = :texte, `datecreate` = :datecreate, `user_id` = :userid
+                WHERE `id` = :id ;
+        ";
+        // on prépare la requête
+        $postUpdate = $db->prepare($sql);
+
+        // attribution des valeurs
+        $postUpdate->bindValue(':id',$myPostTable_id,PDO::PARAM_INT);
+        $postUpdate->bindValue(':title',$myPostTable_title);
+        $postUpdate->bindValue(':texte',$myPostTable_content);
+        $postUpdate->bindValue(':datecreate',$myPostTable_datecreate_datetime);
+        $postUpdate->bindValue(':userid',$myPostTable_user_id,PDO::PARAM_INT);
+
+        // exécution de la requête
+        $postUpdate->execute();
+
+        // fermeture de transaction (l'autocommit est réactivé si aucun commit n'est présent en fin de page )
+        try{
+            // soumission
+            $db->commit();
+            // envoie d'un bool
+            return true;
+        }catch(Exception $e){
+            // bonne pratique - retour en arrière
+            $db->rollBack();
+            return $e->getMessage();
+        }
 
     }else{
         return "Un des champs n'est pas au format valide";
