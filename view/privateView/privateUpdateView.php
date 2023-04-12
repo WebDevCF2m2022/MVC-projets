@@ -75,7 +75,7 @@ foreach($categoryChoice as $item):
 </div>
 <?php
 endforeach;
-var_dump($_POST,$recupPost);
+
 ?>
 <div class="mb-3">
 <select name='user_id' class="form-select" aria-label="Default select example">

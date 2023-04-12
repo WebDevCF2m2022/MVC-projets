@@ -256,7 +256,7 @@ if(!empty($idCateg)){
 // on veut modifier un post, avec les catégories qui ne se trouvent pas dans la table post: action avec plusieures requêtes = transaction
 function postAdminUpdate(PDO $db, array $postForm): bool|string {
     // on est ICI et aucune variable n'a PAS été vérifiée !
-     var_dump($postForm); 
+    # var_dump($postForm); 
 
     // si il n'existe pas de post 'id' (champs caché) ou qu'il ne correspond pas au champs dans l'URL (hack)
     if(!isset($postForm['id'])||$postForm['id']!=$_GET['updatePost']){
@@ -302,6 +302,20 @@ function postAdminUpdate(PDO $db, array $postForm): bool|string {
         // exécution de la requête
         $postUpdate->execute();
 
+        // on doit supprimer les relations m2m avec de category_has_post pour pouvoir effectuer le changement si il y en a
+        $db->exec("DELETE FROM `category_has_post` WHERE `post_id` = $myPostTable_id");
+
+        // une ou des catégories sont cochées
+        if(isset($postForm['category_id'])){
+            // préparation de la requête
+            $sql = "INSERT INTO `category_has_post` (`category_id`, `post_id`) VALUES ";
+            foreach($postForm['category_id'] as $item){
+                $sql .= (ctype_digit($item))? "(". (int) $item .", $myPostTable_id)," : "";
+            }
+            $sql = substr($sql,0,-1);
+            $db->exec($sql);
+        }
+
         // fermeture de transaction (l'autocommit est réactivé si aucun commit n'est présent en fin de page )
         try{
             // soumission
@@ -311,6 +325,7 @@ function postAdminUpdate(PDO $db, array $postForm): bool|string {
         }catch(Exception $e){
             // bonne pratique - retour en arrière
             $db->rollBack();
+            // on aurait pu envoyer false, mais comme on affiche les erreurs au format texte
             return $e->getMessage();
         }
 

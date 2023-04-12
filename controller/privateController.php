@@ -68,6 +68,12 @@ if (isset($_GET['disconnect'])) {
             // affichage de l'erreur
             $message = $post;
         }
+        // dans changements ont été effectués
+        if($post===true){
+            $message = "L'article a bien été modifié<script>
+            setTimeout(\"location.href = './';\", 2000);
+             </script>";
+        }
     }
 
     $idUpdatePost = (int) $_GET['updatePost'];
