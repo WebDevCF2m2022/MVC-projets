@@ -256,5 +256,5 @@ if(!empty($idCateg)){
 // on veut modifier un post, avec les catégories qui ne se trouvent pas dans la table post: action avec plusieures requêtes = transaction
 function postAdminUpdate(PDO $db, array $postForm){
     // on est ICI et aucune variable n'a PAS été vérifiée !
-    var_dump($postForm);
+    var_dump($postForm); 
 }
